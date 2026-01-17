@@ -1,4 +1,4 @@
-# smart-healthcare-system
+# Smart-Healthcare-System
 Web-based Smart Healthcare Management System
 
 ## Project Overview
