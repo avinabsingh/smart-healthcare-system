@@ -64,3 +64,20 @@ To build a secure, reliable, and user-friendly digital healthcare platform that 
 - Data privacy and security must be maintained
 - UI must be simple and easy to use
 
+
+## MoSCoW Prioritization
+
+| Feature | Priority |
+|--------|----------|
+User Registration & Login | Must Have
+Appointment Booking System | Must Have
+Patient Medical Records | Must Have
+Doctor Schedule Management | Must Have
+Admin User Management | Must Have
+Email Notifications | Should Have
+Reports & Analytics | Should Have
+Upload Medical Reports | Should Have
+Dashboard Visual Analytics | Could Have
+Hospital Department Management | Could Have
+Future AI Diagnosis Module | Won't Have
+
