@@ -1,7 +1,9 @@
 # Smart-Healthcare-System
+
 Web-based Smart Healthcare Management System
 
 ## Project Overview
+
 The Smart Healthcare Management System is a web-based platform designed to digitally manage healthcare operations such as patient registration, appointment booking, doctor scheduling, and medical record management. The system replaces manual and fragmented hospital processes with a centralized, secure, and efficient digital solution.
 
 ## Problem It Solves
@@ -13,16 +15,19 @@ This project solves these problems by providing an affordable, easy-to-use, and 
 ## Target Users (Personas)
 
 ### Patient
+
 - Book appointments online
 - View medical history and reports
 - Receive appointment reminders
 
 ### Doctor
+
 - Manage availability schedules
 - View patient medical records
 - Update prescriptions and diagnosis
 
 ### Admin
+
 - Manage users and system data
 - Monitor appointments
 - Generate reports and analytics
@@ -64,20 +69,67 @@ To build a secure, reliable, and user-friendly digital healthcare platform that 
 - Data privacy and security must be maintained
 - UI must be simple and easy to use
 
-
 ## MoSCoW Prioritization
 
-| Feature | Priority |
-|--------|----------|
-User Registration & Login | Must Have
-Appointment Booking System | Must Have
-Patient Medical Records | Must Have
-Doctor Schedule Management | Must Have
-Admin User Management | Must Have
-Email Notifications | Should Have
-Reports & Analytics | Should Have
-Upload Medical Reports | Should Have
-Dashboard Visual Analytics | Could Have
-Hospital Department Management | Could Have
-Future AI Diagnosis Module | Won't Have
+| Feature                        | Priority    |
+| ------------------------------ | ----------- |
+| User Registration & Login      | Must Have   |
+| Appointment Booking System     | Must Have   |
+| Patient Medical Records        | Must Have   |
+| Doctor Schedule Management     | Must Have   |
+| Admin User Management          | Must Have   |
+| Email Notifications            | Should Have |
+| Reports & Analytics            | Should Have |
+| Upload Medical Reports         | Should Have |
+| Dashboard Visual Analytics     | Could Have  |
+| Hospital Department Management | Could Have  |
+| Future AI Diagnosis Module     | Won't Have  |
 
+---
+
+## Branching Strategy (GitHub Flow)
+
+This project follows the GitHub Flow branching strategy.
+
+The main branch contains stable and production-ready code.
+
+For implementing new features and improvements, separate feature branches are created.
+
+### Example Feature Branch Used:
+
+feature-full-auth-system
+
+This branch was used to develop authentication and appointment management features before pushing changes to the main branch.
+
+---
+
+## Local Development Tools
+
+The following tools were used during development:
+
+- Node.js (Backend runtime)
+- React.js (Frontend framework)
+- MongoDB (Database)
+- Docker Desktop (Containerization)
+- Git and GitHub (Version control)
+- Visual Studio Code (Code editor)
+
+---
+
+## Quick Start – Local Development (Docker)
+
+### Prerequisites
+
+Make sure the following software is installed:
+
+- Docker Desktop
+
+---
+
+### Steps To Run The Project
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/avinabsingh/smart-healthcare-system.git
+```
