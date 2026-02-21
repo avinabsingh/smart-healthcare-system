@@ -319,3 +319,55 @@ Role-based content visibility
 Logical grouping of related features
 
 These improvements ensure the system is intuitive and reduces the learning curve for users.
+
+5. Design Decisions and Rationale
+
+Several key design decisions were made to ensure system clarity, maintainability, and scalability.
+
+5.1 Separation of Authentication Logic
+
+Decision:
+Authentication and authorization logic were implemented exclusively in the backend layer using JWT.
+
+Reason:
+Keeping authentication in the backend ensures better security, reduces frontend complexity, and prevents unauthorized database access. This maintains low coupling between UI and security logic.
+
+5.2 REST API-Based Communication
+
+Decision:
+Frontend and backend communicate strictly through REST APIs.
+
+Reason:
+This creates a clear abstraction boundary. The frontend does not depend on database structure, only on API contracts. This allows backend refactoring without affecting UI implementation.
+
+5.3 Role-Based Dashboard Design
+
+Decision:
+Separate dashboards were designed for Patient, Doctor, and Admin users.
+
+Reason:
+This improves usability and ensures high cohesion within each user interface. Each role only sees relevant functionality, reducing complexity and improving user experience.
+
+5.4 Modular Backend Structure
+
+Decision:
+Backend features were divided into logical modules (Authentication, Appointments, Records, Users).
+
+Reason:
+This supports modularity and simplifies testing, debugging, and future feature expansion such as AI diagnosis integration.
+
+5.5 Docker-Based Environment Standardization
+
+Decision:
+Docker was used for containerizing backend services.
+
+Reason:
+Docker ensures consistent environments across development and deployment. It reduces configuration errors and improves portability.
+
+5.6 Future-Ready Extensibility
+
+Decision:
+The architecture was designed to allow future integration of additional services (e.g., AI module, external hospital systems).
+
+Reason:
+A layered structure ensures new modules can be added without modifying core system components, improving long-term maintainability.
