@@ -1,0 +1,83 @@
+2. Design Principles Applied
+
+The Smart Healthcare Management System was designed using core software engineering principles such as abstraction, modularity, high cohesion, and low coupling to ensure maintainability, scalability, and clarity of system structure.
+
+2.1 Abstraction
+
+Abstraction was applied by separating the system into logical layers:
+
+The frontend handles only user interface and presentation logic.
+
+The backend handles business logic, authentication, and request processing.
+
+The database layer is responsible only for data storage.
+
+Docker abstracts environment configuration and deployment setup.
+
+Each layer hides its internal implementation details from other layers. For example, the frontend does not directly access the database; it communicates only through REST APIs provided by the backend.
+
+This abstraction improves security, maintainability, and flexibility for future upgrades.
+
+2.2 Modularity
+
+The system is divided into independent modules:
+
+Authentication Module
+
+Appointment Management Module
+
+Medical Records Module
+
+User Management Module
+
+Notification Module (future enhancement)
+
+Each module performs a specific responsibility and can be modified or extended without affecting unrelated modules.
+
+For example, improvements in appointment scheduling logic do not impact authentication or database schema.
+
+This modular structure improves reusability and simplifies testing.
+
+2.3 High Cohesion
+
+Each module in the system performs a single, well-defined responsibility:
+
+The authentication module handles only login and registration.
+
+The appointment module handles booking, updating, and cancelling appointments.
+
+The database module handles CRUD operations only.
+
+The frontend components are designed screen-wise (Login, Dashboard, Booking, Records).
+
+Because each component focuses on a specific task, internal logic remains strongly related, which increases maintainability and clarity.
+
+2.4 Low Coupling
+
+Low coupling was achieved by:
+
+Using REST APIs for communication between frontend and backend.
+
+Separating business logic from UI logic.
+
+Using Docker to isolate runtime dependencies.
+
+Implementing role-based access control in backend instead of frontend.
+
+Changes in one module (e.g., UI redesign) do not require changes in backend logic or database structure.
+
+This ensures the system can evolve without breaking other components.
+
+2.5 Maintainability and Future Scalability
+
+The layered architecture allows:
+
+Easy addition of new modules (e.g., AI diagnosis)
+
+Replacement of database without affecting frontend
+
+Deployment on different cloud platforms
+
+Scaling backend services independently
+
+The design supports long-term system growth and future enhancements.
