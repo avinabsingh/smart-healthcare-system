@@ -81,3 +81,101 @@ Deployment on different cloud platforms
 Scaling backend services independently
 
 The design supports long-term system growth and future enhancements.
+
+3. High-Level Architecture
+
+The Smart Healthcare Management System follows a Layered Client–Server Architecture to ensure clear separation of responsibilities, scalability, and maintainability.
+
+3.1 Architecture Style Chosen
+
+The system is designed using a combination of:
+
+Client–Server Architecture
+
+Layered Architecture Pattern
+
+Why This Architecture Was Chosen
+
+Separation of Concerns – UI, business logic, and data storage are separated into independent layers.
+
+Scalability – Backend services can be scaled independently from the frontend.
+
+Maintainability – Changes in one layer do not affect other layers.
+
+Security – Direct database access from frontend is restricted.
+
+Containerized Deployment – Docker enables environment consistency.
+
+3.2 Layer Description
+
+1. Presentation Layer (Frontend – React)
+
+This layer is responsible for:
+
+User Interface rendering
+
+Form validation
+
+Sending HTTP requests to backend
+
+Displaying server responses
+
+Users (Patient, Doctor, Admin) interact only with this layer.
+
+2. Application Layer (Backend – Node.js + Express)
+
+This layer handles:
+
+REST API endpoints
+
+Authentication and Authorization (JWT-based)
+
+Role-based access control
+
+Appointment management logic
+
+Medical records processing
+
+It acts as an intermediary between frontend and database.
+
+3. Data Layer (MongoDB)
+
+This layer stores:
+
+User accounts
+
+Appointment records
+
+Medical records
+
+System logs
+
+CRUD operations are performed only through backend APIs.
+
+4. Infrastructure Layer (Docker + Deployment)
+
+Docker is used to:
+
+Containerize backend services
+
+Manage dependencies
+
+Ensure consistent local and production environments
+
+The deployment server hosts containerized services and manages application availability.
+
+3.3 Data Flow Explanation
+
+User interacts with frontend.
+
+Frontend sends HTTPS REST API request to backend.
+
+Backend validates request and applies business logic.
+
+Backend performs CRUD operations on database.
+
+Response is sent back to frontend.
+
+Docker manages runtime and deployment environment.
+
+This structured flow ensures security, modularity, and maintainability.
