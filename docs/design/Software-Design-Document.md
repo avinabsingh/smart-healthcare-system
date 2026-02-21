@@ -179,3 +179,143 @@ Response is sent back to frontend.
 Docker manages runtime and deployment environment.
 
 This structured flow ensures security, modularity, and maintainability.
+
+4. User Interface Design
+
+The user interface of the Smart Healthcare Management System was designed to ensure usability, clarity, and consistency across all user roles (Patient, Doctor, and Admin). The UI design focuses on simplicity, accessibility, and intuitive navigation.
+
+Low-fidelity wireframes were initially created in Figma to plan layout structure before development. These wireframes were later refined into consistent UI screens.
+
+4.1 Design Goals
+
+The UI was designed with the following goals:
+
+Consistent navigation structure across all dashboards
+
+Clear feedback for user actions (login success, appointment confirmation)
+
+Role-based dashboards for better usability
+
+Mobile-responsive layout structure
+
+Minimal clutter and readable typography
+
+4.2 Screen Descriptions
+
+1. Login Screen
+
+Purpose:
+Provides secure authentication for patients, doctors, and administrators.
+
+Design Considerations:
+
+Simple form layout with email and password fields
+
+Clear “Login” button
+
+Registration link for new users
+
+Error feedback for invalid credentials
+
+The layout is minimal to reduce cognitive load and improve usability.
+
+2. Patient Dashboard
+
+Purpose:
+Acts as the main control panel for patients.
+
+Design Considerations:
+
+Left-side navigation menu for easy access
+
+Upcoming appointments panel
+
+Notifications section
+
+Clear logout option
+
+The dashboard ensures patients can quickly view and manage their healthcare activities.
+
+3. Doctor Dashboard
+
+Purpose:
+Allows doctors to manage appointments and patient records.
+
+Design Considerations:
+
+Appointment list for the day
+
+Accept/Reject appointment controls
+
+Schedule management section
+
+Statistics summary
+
+The layout prioritizes efficiency and fast decision-making.
+
+4. Admin Dashboard
+
+Purpose:
+Provides administrative control over the system.
+
+Design Considerations:
+
+User management panels
+
+System statistics
+
+Monitoring tools
+
+Organized layout with clear section separation
+
+The admin interface is structured to prevent confusion and improve system control.
+
+5. Appointment Booking Screen
+
+Purpose:
+Allows patients to book appointments easily.
+
+Design Considerations:
+
+Dropdown for doctor selection
+
+Date picker
+
+Time slot selection
+
+Confirmation button
+
+Clear input controls reduce booking errors and improve user confidence.
+
+6. Medical Records Screen
+
+Purpose:
+Displays patient medical history in a structured format.
+
+Design Considerations:
+
+Organized record table layout
+
+Clear diagnosis display
+
+Report viewing option
+
+Chronological arrangement
+
+This design improves readability and long-term record access.
+
+4.3 UI Consistency and Usability Improvements
+
+The following usability principles were applied:
+
+Consistent button styles across screens
+
+Same navigation structure for all dashboards
+
+Clear action buttons (Book, Save, Logout)
+
+Role-based content visibility
+
+Logical grouping of related features
+
+These improvements ensure the system is intuitive and reduces the learning curve for users.
