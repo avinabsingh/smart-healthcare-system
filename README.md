@@ -133,3 +133,15 @@ Make sure the following software is installed:
 ```bash
 git clone https://github.com/avinabsingh/smart-healthcare-system.git
 ```
+
+## Software Design
+
+The Smart Healthcare Management System follows a Layered Client–Server Architecture with MVC pattern. The backend is structured into Routes, Middleware, Controllers, and Models to ensure modularity and low coupling.
+
+### Architecture Diagram
+
+docs/design/architecture.png
+
+### Wireframes
+
+docs/design/
