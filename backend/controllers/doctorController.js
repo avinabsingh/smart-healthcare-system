@@ -1,0 +1,15 @@
+const User = require("../models/User");
+const Appointment = require("../models/Appointment");
+
+exports.getDoctors = async (req, res) => {
+  const doctors = await User.find({ role: "doctor" }).select("-password");
+  res.json(doctors);
+};
+
+exports.getDoctorAppointments = async (req, res) => {
+  const appointments = await Appointment.find({
+    doctorId: req.userId
+  });
+
+  res.json(appointments);
+};
