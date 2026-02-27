@@ -268,6 +268,9 @@ The user interface was initially designed as low-fidelity wireframes and later r
 - **User-Centric Design:** Interfaces designed to minimize complexity and improve accessibility.
 
 The UI focuses on simplicity, intuitive navigation, and efficient interaction between patients and healthcare providers.
+
+---
+
 ### Implemented Web Application Screenshots
 
 #### User Registration
