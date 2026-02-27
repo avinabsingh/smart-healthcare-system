@@ -207,10 +207,20 @@ docs/design/
 
 ## Software Design
 
+### Design Philosophy (Summary)
+
+The Smart Healthcare Management System was designed with long-term maintainability, scalability, and clear separation of responsibilities in mind. A layered Client–Server architecture combined with the MVC pattern was selected to minimize tight coupling between components and allow independent development of frontend, backend, and database layers.
+
+Security and modularity were treated as core design priorities rather than afterthoughts. JWT-based authentication and role-based access control (RBAC) ensure secure and stateless user management, while Docker containerization guarantees consistent deployment environments and future cloud readiness.
+
+This architectural approach enables easier debugging, feature expansion, and integration of future modules such as analytics dashboards, mobile applications, or third-party healthcare systems.
+
+---
+
 ### System Architecture
 ![System Architecture](docs/design/architecture.png)
 
-The Smart Healthcare Management System follows a Layered Client–Server Architecture combined with the MVC pattern to ensure clear separation between presentation, business logic, and data layers. JWT-based authentication and role-based access control were implemented to provide secure and scalable user management for Patients, Doctors, and Admins. The system is containerized using Docker and designed with modular principles to support maintainability, extensibility, and future cloud deployment.
+The system follows a Layered Client–Server architecture combined with the MVC pattern to enforce clear separation between the presentation, business logic, and data layers. This structure minimizes tight coupling between components, improving maintainability and enabling independent development of frontend and backend modules. JWT-based authentication and role-based access control (RBAC) were implemented to ensure secure, stateless, and scalable user management for Patients, Doctors, and Admins. Additionally, Docker containerization and modular backend structuring were adopted to maintain environment consistency, simplify deployment, and support future scalability and cloud integration.
 
 ### Technology Stack Overview
 
