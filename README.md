@@ -292,7 +292,7 @@ The Doctor Dashboard enables doctors to view scheduled appointments, access pati
 ---
 
 #### Appointment Booking
-![Appointment Booking](docs/design/AppointmentBookin_website.png)
+![Appointment Booking](docs/design/AppointmentBooking_website.png)
 
 This interface allows patients to select available doctors, choose preferred dates and time slots, and confirm appointments. The booking system communicates with the backend via REST APIs to store and retrieve appointment data securely.
 
