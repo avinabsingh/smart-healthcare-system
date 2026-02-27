@@ -205,7 +205,7 @@ docs/design/
 
 ### Old Figma WireFrames
 
-docs/wireframes_DA1
+docs/wireframes_DA1/
 
 
 
