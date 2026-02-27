@@ -199,9 +199,14 @@ git clone https://github.com/avinabsingh/smart-healthcare-system.git
 
 docs/design/architecture.png
 
-### Wireframes
+### Updated Figma Screens
 
 docs/design/
+
+### Old Figma WireFrames
+
+docs/wireframes_DA1
+
 
 
 
