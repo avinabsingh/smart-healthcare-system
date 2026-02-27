@@ -114,6 +114,9 @@ The following tools were used during development:
 - Git and GitHub (Version control)
 - Visual Studio Code (Code editor)
 
+## Project Structure
+
+```
 smart-healthcare-system/
 │
 ├── frontend/                         # React frontend application
@@ -148,6 +151,7 @@ smart-healthcare-system/
 ├── docker-compose.yml                # Docker container configuration
 ├── README.md                         # Project documentation
 └── .env                              # Environment variables (not committed)
+```
 
 ---
 
