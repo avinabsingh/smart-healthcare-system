@@ -114,9 +114,66 @@ The following tools were used during development:
 - Git and GitHub (Version control)
 - Visual Studio Code (Code editor)
 
+smart-healthcare-system/
+│
+├── frontend/                         # React frontend application
+│   ├── public/                       # Static assets
+│   ├── src/                          # Source code
+│   │   ├── components/               # Reusable UI components
+│   │   ├── pages/                    # Page-level components (Dashboard, Login, etc.)
+│   │   ├── services/                 # API service calls
+│   │   ├── context/                  # Authentication & global state management
+│   │   └── App.js                    # Main React entry
+│   └── package.json
+│
+├── backend/                          # Express backend server
+│   ├── routes/                       # API route definitions
+│   ├── controllers/                  # Business logic
+│   ├── models/                       # Mongoose database schemas
+│   ├── middleware/                   # JWT authentication & authorization
+│   ├── config/                       # Database configuration
+│   ├── server.js                     # Main server entry point
+│   └── package.json
+│
+├── docs/
+│   └── design/                       # Architecture diagrams & UI screenshots
+│       ├── architecture.drawio
+│       ├── architecture.png
+│       ├── login.png
+│       ├── patient-dashboard.png
+│       ├── doctor-dashboard.png
+│       ├── admin-dashboard.png
+│       └── ...
+│
+├── docker-compose.yml                # Docker container configuration
+├── README.md                         # Project documentation
+└── .env                              # Environment variables (not committed)
+
 ---
 
 ## Quick Start – Local Development (Docker)
+
+## Deployment
+
+The Smart Healthcare Management System is containerized using Docker to ensure consistent development and deployment environments. Docker Compose is used to orchestrate multiple services including the frontend, backend, and MongoDB database.
+
+### Deployment Architecture
+
+- Frontend Container – Hosts the React application
+- Backend Container – Runs the Express.js REST API server
+- Database Container – MongoDB instance for persistent data storage
+
+All services communicate through an internal Docker network, ensuring secure and isolated inter-service communication.
+
+### Environment Configuration
+
+Environment variables such as database URI, JWT secret, and server ports are managed using a `.env` file to maintain security and flexibility across different deployment environments.
+
+### Scalability & Cloud Readiness
+
+The containerized architecture makes the system cloud-ready and easily deployable on platforms such as AWS, Azure, or Google Cloud. Services can be scaled independently based on load requirements.
+
+This deployment approach ensures portability, maintainability, and simplified DevOps management.
 
 ### Prerequisites
 
@@ -133,10 +190,6 @@ Make sure the following software is installed:
 ```bash
 git clone https://github.com/avinabsingh/smart-healthcare-system.git
 ```
-
-## Software Design
-
-The Smart Healthcare Management System follows a Layered Client–Server Architecture with MVC pattern. The backend is structured into Routes, Middleware, Controllers, and Models to ensure modularity and low coupling.
 
 ### Architecture Diagram
 
@@ -155,6 +208,24 @@ docs/design/
 
 The Smart Healthcare Management System follows a Layered Client–Server Architecture combined with the MVC pattern to ensure clear separation between presentation, business logic, and data layers. JWT-based authentication and role-based access control were implemented to provide secure and scalable user management for Patients, Doctors, and Admins. The system is containerized using Docker and designed with modular principles to support maintainability, extensibility, and future cloud deployment.
 
+### Technology Stack Overview
+
+- Frontend: React.js (UI rendering and client-side routing)
+- Backend: Node.js + Express.js (REST API and business logic)
+- Database: MongoDB with Mongoose ORM
+- Authentication: JWT + bcrypt password hashing
+- Containerization: Docker & Docker Compose
+
+### API Structure (High-Level)
+
+The backend exposes RESTful APIs organized by feature modules:
+
+- /api/auth → Registration & Login
+- /api/appointments → Booking and management
+- /api/users → User management
+- /api/records → Medical records upload & retrieval
+
+All protected routes require JWT authentication.
 ---
 
 ## UI/UX Design (Figma Screens)
