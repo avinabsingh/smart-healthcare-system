@@ -248,7 +248,7 @@ The user interface was initially designed as low-fidelity wireframes and later r
 ### My Appointments Screen
 ![My Appointments](docs/design/Appointment-screen.png)
 
-<p align="center">
+<p>
   <img src="docs/design/appointment-booking.jpeg" width="550"/>
 </p>
 
