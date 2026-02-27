@@ -249,7 +249,10 @@ The user interface was initially designed as low-fidelity wireframes and later r
 ![My Appointments](docs/design/Appointment-screen.png)
 
 ### Appointment Booking Interface
-![Appointment Booking](docs/design/appointment-booking.jpeg)
+
+<p align="center">
+  <img src="docs/design/appointment-booking.jpeg" width="600"/>
+</p>
 
 ### Medical Records Interface
 ![Medical Records](docs/design/medical-records.png)
