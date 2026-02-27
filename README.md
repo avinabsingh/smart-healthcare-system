@@ -234,8 +234,10 @@ All protected routes require JWT authentication.
 
 ## UI/UX Design (Figma Screens)
 
-### Login Screen
-![Login](docs/design/login.png)
+The user interface was initially designed as low-fidelity wireframes and later refined into structured, high-fidelity Figma screens. The system follows a role-based dashboard design to ensure clarity, usability, and efficient healthcare workflow management.
+
+### User Registration Screen
+![User Registration](docs/design/Signup-Screen.png)
 
 ### Patient Dashboard
 ![Patient Dashboard](docs/design/patient-dashboard.png)
@@ -243,17 +245,28 @@ All protected routes require JWT authentication.
 ### Doctor Dashboard
 ![Doctor Dashboard](docs/design/doctor-dashboard.png)
 
-### Admin Dashboard
-![Admin Dashboard](docs/design/admin-dashboard.png)
+### My Appointments Screen
+![My Appointments](docs/design/Appointment-screen.png)
 
 ### Appointment Booking Interface
-![Appointment Booking](docs/design/appointment-booking.png)
+![Appointment Booking](docs/design/appointment-booking.jpeg)
 
 ### Medical Records Interface
 ![Medical Records](docs/design/medical-records.png)
 
-The UI is designed using a role-based dashboard approach to ensure clarity and ease of navigation. Each user type (Admin, Doctor, Patient) is provided with a dedicated interface tailored to their responsibilities. The design prioritizes usability, accessibility, and intuitive healthcare workflow management.
+---
 
+### Design Highlights
+
+- **Role-Based Interface:** Separate dashboards for Patient and Doctor with task-specific features.
+- **Consistent Navigation Bar:** Uniform top navigation for smooth user flow.
+- **Card-Based Layout:** Action buttons and features are organized in structured cards.
+- **Calendar-Based Scheduling:** Visual date selection for appointment management.
+- **Clear Typography Hierarchy:** Improved readability using structured headings and section labels.
+- **Consistent Color Theme:** Healthcare-themed dark UI for visual consistency.
+- **User-Centric Design:** Interfaces designed to minimize complexity and improve accessibility.
+
+The UI focuses on simplicity, intuitive navigation, and efficient interaction between patients and healthcare providers.
 ### Implemented Web Application Screenshots
 
 #### User Registration
