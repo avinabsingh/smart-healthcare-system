@@ -153,7 +153,7 @@ docs/design/
 ### System Architecture
 ![System Architecture](docs/design/architecture.png)
 
-The system follows a layered client-server architecture separating the presentation layer, application logic, and database layer. Role-based access control is implemented to differentiate Admin, Doctor, and Patient functionalities. The modular design ensures scalability and maintainability of healthcare workflows such as appointments and medical record management.
+The Smart Healthcare Management System follows a Layered Client–Server Architecture combined with the MVC pattern to ensure clear separation between presentation, business logic, and data layers. JWT-based authentication and role-based access control were implemented to provide secure and scalable user management for Patients, Doctors, and Admins. The system is containerized using Docker and designed with modular principles to support maintainability, extensibility, and future cloud deployment.
 
 ---
 
