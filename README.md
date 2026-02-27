@@ -145,3 +145,30 @@ docs/design/architecture.png
 ### Wireframes
 
 docs/design/
+
+
+
+## Software Design
+
+### System Architecture
+![System Architecture](docs/design/architecture.png)
+
+### Authentication Module
+![Login](docs/design/login.png)
+
+### Patient Dashboard
+![Patient Dashboard](docs/design/patient-dashboard.png)
+
+### Doctor Dashboard
+![Doctor Dashboard](docs/design/doctor-dashboard.png)
+
+### Admin Dashboard
+![Admin Dashboard](docs/design/admin-dashboard.png)
+
+### Appointment Booking
+![Appointment Booking](docs/design/appointment-booking.png)
+
+### Medical Records Management
+![Medical Records](docs/design/medical-records.png)
+
+The Smart HealthCare Management System follows a layered client-server architecture separating presentation, business logic, and data management layers. Role-based dashboards (Admin, Doctor, Patient) ensure clear access control and modular functionality. The system design emphasizes scalability, maintainability, and secure handling of medical records and appointment workflows.
