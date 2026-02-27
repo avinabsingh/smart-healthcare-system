@@ -153,7 +153,13 @@ docs/design/
 ### System Architecture
 ![System Architecture](docs/design/architecture.png)
 
-### Authentication Module
+The system follows a layered client-server architecture separating the presentation layer, application logic, and database layer. Role-based access control is implemented to differentiate Admin, Doctor, and Patient functionalities. The modular design ensures scalability and maintainability of healthcare workflows such as appointments and medical record management.
+
+---
+
+## UI/UX Design (Figma Screens)
+
+### Login Screen
 ![Login](docs/design/login.png)
 
 ### Patient Dashboard
@@ -165,10 +171,10 @@ docs/design/
 ### Admin Dashboard
 ![Admin Dashboard](docs/design/admin-dashboard.png)
 
-### Appointment Booking
+### Appointment Booking Interface
 ![Appointment Booking](docs/design/appointment-booking.png)
 
-### Medical Records Management
+### Medical Records Interface
 ![Medical Records](docs/design/medical-records.png)
 
-The Smart HealthCare Management System follows a layered client-server architecture separating presentation, business logic, and data management layers. Role-based dashboards (Admin, Doctor, Patient) ensure clear access control and modular functionality. The system design emphasizes scalability, maintainability, and secure handling of medical records and appointment workflows.
+The UI is designed using a role-based dashboard approach to ensure clarity and ease of navigation. Each user type (Admin, Doctor, Patient) is provided with a dedicated interface tailored to their responsibilities. The design prioritizes usability, accessibility, and intuitive healthcare workflow management.
