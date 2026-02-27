@@ -7,9 +7,17 @@ exports.getDoctors = async (req, res) => {
 };
 
 exports.getDoctorAppointments = async (req, res) => {
-  const appointments = await Appointment.find({
-    doctorId: req.userId
-  });
+  try {
+    const appointments = await Appointment.find({
+      doctorId: req.userId
+    })
+    .populate("patientId", "name email")   // 🔥 shows patient details
+    .sort({ createdAt: -1 });              // optional but better UX
 
-  res.json(appointments);
+    res.json(appointments);
+
+  } catch (error) {
+    console.error("Doctor Appointment Error:", error);
+    res.status(500).json({ message: "Failed to fetch appointments" });
+  }
 };

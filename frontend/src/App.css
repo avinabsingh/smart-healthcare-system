@@ -1,0 +1,46 @@
+/* LIGHT MODE */
+.light {
+  --page-bg: linear-gradient(135deg,#f5f7fa,#e4ecf7);
+  --text-color: #1a1a1a;
+  --nav-bg: rgba(255,255,255,0.8);
+  --card-bg: rgba(255,255,255,0.7);
+  --card-border: rgba(0,0,0,0.08);
+  --card-shadow: rgba(0,0,0,0.1);
+}
+
+/* DARK MODE */
+.dark {
+  --page-bg: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --text-color: #ffffff;
+  --nav-bg: rgba(15,32,39,0.85);
+  --card-bg: rgba(255,255,255,0.08);
+  --card-border: rgba(255,255,255,0.1);
+  --card-shadow: rgba(0,0,0,0.4);
+}
+
+
+:root {
+  --page-bg: #f5f7fa;
+  --text-color: #111827;
+  --card-bg: #ffffff;
+  --card-border: rgba(0,0,0,0.1);
+  --glass-bg: rgba(255,255,255,0.7);
+}
+
+.dark {
+  --page-bg: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --text-color: #ffffff;
+  --card-bg: rgba(255,255,255,0.08);
+  --card-border: rgba(255,255,255,0.2);
+  --glass-bg: rgba(255,255,255,0.08);
+} 
+
+select {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+select option {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}

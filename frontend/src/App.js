@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 import Appointment from "./Appointment";
 import Records from "./Records";
 import Profile from "./Profile";
-
+import DoctorAppointments from "./DoctorAppointments";
 
 import MyAppointments from "./MyAppointments";
 
@@ -18,6 +18,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/appointment" element={<Appointment />} />
+        <Route path="/doctor-appointments" element={<DoctorAppointments />} />
+
 
         
         <Route path="/my-appointments" element={<MyAppointments />} />

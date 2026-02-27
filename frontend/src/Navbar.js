@@ -60,26 +60,29 @@ const navStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "14px 50px",
+  padding: "16px 60px",
   background: "var(--nav-bg)",
-  backdropFilter: "blur(14px)",
-  boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
+  backdropFilter: "blur(20px)",
+  boxShadow: "0 10px 40px var(--card-shadow)",
   position: "sticky",
   top: 0,
   zIndex: 100,
-  borderBottom: "1px solid rgba(255,255,255,0.08)"
+  borderBottom: "1px solid var(--card-border)",
+  transition: "all 0.3s ease"
 };
 
 const logoStyle = {
-  fontWeight: "bold",
-  letterSpacing: "1px",
-  color: "#00d4ff",
-  cursor: "pointer"
+  fontWeight: "800",
+  fontSize: "20px",
+  letterSpacing: "2px",
+  background: "linear-gradient(45deg,#00d4ff,#6a5acd)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
 };
 
 const menuStyle = {
   display: "flex",
-  gap: "22px",
+  gap: "25px",
   alignItems: "center"
 };
 
@@ -87,20 +90,19 @@ const linkStyle = {
   textDecoration: "none",
   color: "var(--text-color)",
   fontWeight: "600",
-  padding: "8px 14px",
-  borderRadius: "10px",
-  transition: "0.25s ease",
-  position: "relative"
+  padding: "8px 16px",
+  borderRadius: "12px",
+  transition: "all 0.3s ease",
 };
 
 const logoutBtn = {
-  padding: "8px 16px",
-  borderRadius: "10px",
+  padding: "8px 18px",
+  borderRadius: "12px",
   border: "none",
   background: "linear-gradient(45deg,#ff416c,#ff4b2b)",
   color: "white",
   cursor: "pointer",
   fontWeight: "bold",
-  transition: "0.3s ease",
-  boxShadow: "0 5px 15px rgba(255,75,43,0.4)"
+  boxShadow: "0 6px 18px rgba(255,75,43,0.5)",
+  transition: "all 0.3s ease",
 };

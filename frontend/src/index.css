@@ -207,3 +207,40 @@ a:hover {
 button:hover {
   transform: scale(1.05);
 }
+
+/* =========================
+   LIGHT THEME
+========================= */
+body[data-theme="light"] {
+  --page-bg: linear-gradient(135deg,#f5f7fa,#e4ecf7);
+  --text-color: #1a1a1a;
+  --nav-bg: rgba(255,255,255,0.85);
+  --card-bg: rgba(255,255,255,0.7);
+  --card-border: rgba(0,0,0,0.08);
+  --card-shadow: rgba(0,0,0,0.1);
+}
+
+/* =========================
+   DARK THEME
+========================= */
+body[data-theme="dark"] {
+  --page-bg: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --text-color: #ffffff;
+  --nav-bg: rgba(15,32,39,0.85);
+  --card-bg: rgba(255,255,255,0.08);
+  --card-border: rgba(255,255,255,0.1);
+  --card-shadow: rgba(0,0,0,0.4);
+}
+
+/* Smooth transition */
+body {
+  margin: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+  font-family: Inter, sans-serif;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(30px); }
+  100% { transform: translateY(0px); }
+}
