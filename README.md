@@ -178,3 +178,38 @@ The Smart Healthcare Management System follows a Layered Client–Server Archite
 ![Medical Records](docs/design/medical-records.png)
 
 The UI is designed using a role-based dashboard approach to ensure clarity and ease of navigation. Each user type (Admin, Doctor, Patient) is provided with a dedicated interface tailored to their responsibilities. The design prioritizes usability, accessibility, and intuitive healthcare workflow management.
+
+### Implemented Web Application Screenshots
+
+#### User Registration
+![User Registration](docs/design/SignUpScreen_website.png)
+
+This screen allows new users (Patients or Doctors) to create an account by providing essential details such as name, email, password, and role selection. Passwords are securely hashed using bcrypt before storage, and validation mechanisms ensure data integrity during registration.
+
+---
+
+#### Patient Dashboard
+![Patient Dashboard](docs/design/PatientDashboard_website.png)
+
+The Patient Dashboard provides an overview of booked appointments, medical history, and profile details. Patients can schedule new appointments, upload medical records, and track upcoming consultations in an intuitive and user-friendly interface.
+
+---
+
+#### Doctor Dashboard
+![Doctor Dashboard](docs/design/DoctorDashboard_website.png)
+
+The Doctor Dashboard enables doctors to view scheduled appointments, access patient medical records, and manage their availability. Role-based authorization ensures doctors can only access assigned patient data, maintaining privacy and security.
+
+---
+
+#### Appointment Booking
+![Appointment Booking](docs/design/AppointmentBookin_website.png)
+
+This interface allows patients to select available doctors, choose preferred dates and time slots, and confirm appointments. The booking system communicates with the backend via REST APIs to store and retrieve appointment data securely.
+
+---
+
+#### Medical Record Upload
+![Medical Record Upload](docs/design/UploadingMedicalRecords_website.png)
+
+This module allows patients to upload medical reports and documents, which are securely stored and accessible only to authorized doctors. File validation and authentication middleware ensure secure handling of sensitive healthcare information.
