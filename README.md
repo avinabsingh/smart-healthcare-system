@@ -254,6 +254,9 @@ The user interface was initially designed as low-fidelity wireframes and later r
 ### User Registration Screen
 ![User Registration](docs/design/Signup-Screen.png)
 
+### Login Screen  
+![Login Screen](docs/design/login_screen.png)
+
 ### Patient Dashboard
 ![Patient Dashboard](docs/design/patient-dashboard.png)
 
