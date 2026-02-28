@@ -298,10 +298,30 @@ This screen allows new users (Patients or Doctors) to create an account by provi
 
 ---
 
+#### Login Screen
+![Login Screen](docs/design/login_screen_website.png)
+
+The Login Screen enables registered users (Patients, Doctors, and Admins) to securely access the system. It verifies credentials using JWT-based authentication and redirects users to their respective dashboards based on role. Proper validation messages are displayed for incorrect credentials or missing input fields.
+
+---
+
 #### Patient Dashboard
 ![Patient Dashboard](docs/design/PatientDashboard_website.png)
 
 The Patient Dashboard provides an overview of booked appointments, medical history, and profile details. Patients can schedule new appointments, upload medical records, and track upcoming consultations in an intuitive and user-friendly interface.
+
+---
+
+#### Patient Dashboard (Light Mode)
+![Patient Dashboard Light Mode](docs/design/PatientDashboard_website_light_mode.png)
+
+The light mode version of the Patient Dashboard demonstrates UI flexibility and improved accessibility. It maintains consistent functionality while offering an alternative visual theme for enhanced user experience.
+
+---
+#### Profile Management Screen
+![Profile Screen](docs/design/ProfileScreen_website.png)
+
+The Profile Management screen allows users to view and update their personal information. Users can modify profile details while sensitive fields remain protected. All updates are validated and securely stored in the database.
 
 ---
 
@@ -312,10 +332,31 @@ The Doctor Dashboard enables doctors to view scheduled appointments, access pati
 
 ---
 
+#### Doctor Profile Screen
+![Doctor Profile](docs/design/DoctorProfile_website.png)
+
+The Doctor Profile screen displays professional information including specialization, availability, and contact details. This helps patients make informed decisions while booking appointments.
+
+---
+
+#### Appointment Checking (Patient View)
+![Appointments Checking](docs/design/AppointmentsCheckingScreen_website.png)
+
+This interface allows patients to review their scheduled, completed, or cancelled appointments. It provides status indicators and structured appointment details such as date, time, and assigned doctor.
+
+---
+
 #### Appointment Booking
 ![Appointment Booking](docs/design/AppointmentBooking_website.png)
 
 This interface allows patients to select available doctors, choose preferred dates and time slots, and confirm appointments. The booking system communicates with the backend via REST APIs to store and retrieve appointment data securely.
+
+---
+
+#### Doctor Appointments Management
+![Doctor Appointments](docs/design/DoctorAppoinmentsScrren_website.png)
+
+This screen enables doctors to manage incoming appointment requests. Doctors can view patient details, appointment schedules, and update consultation status. The interface ensures efficient appointment handling and workflow management.
 
 ---
 
