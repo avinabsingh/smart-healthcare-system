@@ -3,37 +3,65 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.register = async (req, res) => {
-  const hashed = await bcrypt.hash(req.body.password, 10);
+  try {
+    const { name, email, password, role, specialty } = req.body;
 
-  await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: hashed,
-    role: req.body.role || "patient"
-  });
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
 
-  res.json({ msg: "Registered" });
+    const hashed = await bcrypt.hash(password, 10);
+
+    // Create user object
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashed,
+      role: role || "patient",
+      // Save specialty only if the role is doctor, otherwise undefined
+      specialty: role === "doctor" ? specialty : undefined
+    });
+
+    res.json({ msg: "Registration successful", userId: newUser._id });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error during registration" });
+  }
 };
 
 exports.login = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("User not found");
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send("User not found");
 
-  const valid = await bcrypt.compare(req.body.password, user.password);
-  if (!valid) return res.status(400).send("Wrong password");
+    const valid = await bcrypt.compare(req.body.password, user.password);
+    if (!valid) return res.status(400).send("Wrong password");
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    "healthcareSecret"
-  );
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      "healthcareSecret",
+      { expiresIn: "1d" }
+    );
 
-  res.json({
-    token,
-    role: user.role
-  });
+    res.json({
+      token,
+      role: user.role,
+      name: user.name,
+      specialty: user.specialty // Optional: send back specialty if needed on frontend
+    });
+  } catch (err) {
+    res.status(500).send("Login error");
+  }
 };
 
 exports.getProfile = async (req, res) => {
-  const user = await User.findById(req.userId).select("-password");
-  res.json(user);
+  try {
+    const user = await User.findById(req.userId).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).send("Error fetching profile");
+  }
 };

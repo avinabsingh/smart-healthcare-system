@@ -1,311 +1,433 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./Navbar";
+import { 
+  FileText, Download, Trash2, UploadCloud, 
+  User, Search, Eye, AlertCircle 
+} from "lucide-react";
 
 export default function Records() {
-
+  
+  const [role, setRole] = useState(localStorage.getItem("role"));
+  const [token] = useState(localStorage.getItem("token"));
+  
   const [records, setRecords] = useState([]);
-  const token = localStorage.getItem("token");
+  const [patients, setPatients] = useState([]); // List of patients (For Doctor)
+  const [selectedPatient, setSelectedPatient] = useState(""); // Selected Patient ID (For Doctor)
+  const [loading, setLoading] = useState(false);
 
-  /* ================= FETCH RECORDS FROM BACKEND ================= */
+  /* ================= 1. FETCH PATIENTS (DOCTOR ONLY) ================= */
+  useEffect(() => {
+    if (role === "doctor") {
+      // Assuming you create a backend route to get all patients
+      fetch("http://localhost:5000/api/users/patients", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => setPatients(data))
+      .catch(err => console.error("Failed to load patients", err));
+    } else {
+      // If patient, load own records immediately
+      fetchRecords(); 
+    }
+  }, [role]);
 
-  const fetchRecords = async () => {
+  /* ================= 2. FETCH RECORDS ================= */
+  const fetchRecords = async (patientId = null) => {
+    setLoading(true);
+    let url = "http://localhost:5000/api/records";
+
+    // If doctor is viewing a specific patient
+    if (role === "doctor" && patientId) {
+      url = `http://localhost:5000/api/records/patient/${patientId}`;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/records", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-
       const data = await res.json();
-
-      // 🔥 Important Fix
-      if (Array.isArray(data)) {
-        setRecords(data);
-      } else {
-        console.log("Unexpected response:", data);
-        setRecords([]);
-      }
-
+      setRecords(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.log("Error fetching records");
+      console.error("Error fetching records");
+      setRecords([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= 3. HANDLE PATIENT SELECTION (DOCTOR) ================= */
+  const handlePatientChange = (e) => {
+    const patientId = e.target.value;
+    setSelectedPatient(patientId);
+    if (patientId) {
+      fetchRecords(patientId);
+    } else {
       setRecords([]);
     }
   };
 
-  useEffect(() => {
-    fetchRecords();
-  }, []);
-
-  /* ================= FILE UPLOAD (BACKEND) ================= */
-
+  /* ================= 4. FILE UPLOAD (DOCTOR ONLY) ================= */
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    if (role === "doctor" && !selectedPatient) {
+      alert("Please select a patient first!");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
+    
+    // If doctor, attach the patient ID so backend knows who owns this file
+    if (role === "doctor") {
+      formData.append("patientId", selectedPatient);
+    }
 
+    setLoading(true);
     try {
       await fetch("http://localhost:5000/api/records/upload", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
-
-      fetchRecords(); // refresh after upload
-
+      // Refresh records
+      fetchRecords(role === "doctor" ? selectedPatient : null); 
     } catch (err) {
-      console.log("Upload failed");
+      console.error("Upload failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  /* ================= DELETE (BACKEND) ================= */
-
+  /* ================= 5. DELETE FILE (DOCTOR ONLY) ================= */
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this record?")) return;
 
     try {
       await fetch(`http://localhost:5000/api/records/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
-
-      fetchRecords(); // refresh after delete
-
+      fetchRecords(role === "doctor" ? selectedPatient : null);
     } catch (err) {
-      console.log("Delete failed");
+      console.error("Delete failed");
     }
   };
 
   return (
     <>
       <Navbar />
-
       <div style={styles.page}>
-
-        <motion.div
-          style={styles.header}
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h1 style={styles.title}>📁 Medical Records</h1>
+        
+        {/* Header */}
+        <div style={styles.header}>
+          <motion.h1 
+            style={styles.title}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            {role === "doctor" ? "Manage Medical Records" : "My Medical History"}
+          </motion.h1>
           <p style={styles.subtitle}>
-            Upload and manage your medical reports securely
+            {role === "doctor" 
+              ? "Upload prescriptions and reports for your patients" 
+              : "View and download your medical documents and prescriptions"}
           </p>
-        </motion.div>
-
-        <motion.div
-          style={styles.uploadBox}
-          whileHover={{ scale: 1.02 }}
-        >
-          <input
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            onChange={handleUpload}
-            style={{ display: "none" }}
-            id="fileUpload"
-          />
-
-          <label htmlFor="fileUpload" style={styles.uploadLabel}>
-            ⬆️ Drag & Drop or Click to Upload Report
-            <span style={styles.uploadSub}>
-              (PDF, JPG, PNG supported)
-            </span>
-          </label>
-        </motion.div>
-
-        <div style={styles.grid}>
-
-          {records.length === 0 && (
-            <p style={{ opacity: 0.6 }}>No reports uploaded yet.</p>
-          )}
-
-          {records.map((record) => (
-            <motion.div
-              key={record._id}
-              style={styles.card}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -8 }}
-            >
-
-              <div style={styles.badge}>
-                {new Date(record.createdAt).toLocaleDateString()}
-              </div>
-
-              <div style={styles.fileIcon}>
-                {record.mimetype?.includes("pdf") ? "📄" : "🖼️"}
-              </div>
-
-              <h3 style={styles.fileName}>
-                {record.originalname}
-              </h3>
-
-              <div style={styles.buttonRow}>
-                <a
-                  href={`http://localhost:5000/${record.path}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.viewBtn}
-                >
-                  View
-                </a>
-
-                <a
-                  href={`http://localhost:5000/${record.path}`}
-                  download={record.originalname}
-                  style={styles.downloadBtn}
-                >
-                  Download
-                </a>
-
-                <button
-                  onClick={() => handleDelete(record._id)}
-                  style={styles.deleteBtn}
-                >
-                  Delete
-                </button>
-              </div>
-
-            </motion.div>
-          ))}
-
         </div>
+
+        {/* ================= DOCTOR CONTROLS ================= */}
+        {role === "doctor" && (
+          <motion.div 
+            style={styles.controlPanel}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {/* 1. Select Patient */}
+            <div style={styles.selectGroup}>
+              <label style={styles.label}><Search size={16}/> Select Patient</label>
+              <select 
+                style={styles.select} 
+                value={selectedPatient} 
+                onChange={handlePatientChange}
+              >
+                <option value="">-- Choose a Patient --</option>
+                {patients.map(p => (
+                  <option key={p._id} value={p._id}>{p.name} ({p.email})</option>
+                ))}
+              </select>
+            </div>
+
+            {/* 2. Upload Box (Only visible if patient selected) */}
+            {selectedPatient && (
+              <div style={styles.uploadWrapper}>
+                <input
+                  type="file"
+                  id="fileUpload"
+                  style={{ display: "none" }}
+                  onChange={handleUpload}
+                  accept=".pdf,.jpg,.png,.jpeg"
+                />
+                <label htmlFor="fileUpload" style={styles.uploadBtn}>
+                  <UploadCloud size={18} />
+                  Upload Report
+                </label>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* ================= RECORDS GRID ================= */}
+        
+        {loading && <p style={styles.loading}>Syncing records...</p>}
+
+        {!loading && records.length === 0 && (
+          <div style={styles.emptyState}>
+            <AlertCircle size={40} color="#cbd5e0" />
+            <p>
+              {role === "doctor" && !selectedPatient 
+                ? "Select a patient to view records." 
+                : "No medical records found."}
+            </p>
+          </div>
+        )}
+
+        <motion.div style={styles.grid} layout>
+          <AnimatePresence>
+            {records.map((record) => (
+              <motion.div
+                key={record._id}
+                style={styles.card}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                whileHover={{ y: -5, boxShadow: "0 15px 30px rgba(0,0,0,0.1)" }}
+              >
+                {/* Icon based on file type */}
+                <div style={styles.iconBox}>
+                  <FileText size={32} color="#6c5ce7" />
+                </div>
+
+                <div style={styles.cardContent}>
+                  <h3 style={styles.fileName} title={record.originalname}>
+                    {record.originalname}
+                  </h3>
+                  <p style={styles.date}>
+                    {new Date(record.createdAt).toLocaleDateString("en-US", {
+                      year: 'numeric', month: 'short', day: 'numeric'
+                    })}
+                  </p>
+                </div>
+
+                <div style={styles.actionRow}>
+                  {/* View Button */}
+                  <a 
+                    href={`http://localhost:5000/${record.path}`} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    style={styles.iconBtn}
+                    title="View"
+                  >
+                    <Eye size={18} color="#0984e3" />
+                  </a>
+
+                  {/* Download Button */}
+                  <a 
+                    href={`http://localhost:5000/${record.path}`} 
+                    download 
+                    style={styles.iconBtn}
+                    title="Download"
+                  >
+                    <Download size={18} color="#00b894" />
+                  </a>
+
+                  {/* Delete Button (Doctor Only) */}
+                  {role === "doctor" && (
+                    <button 
+                      onClick={() => handleDelete(record._id)} 
+                      style={{...styles.iconBtn, border: "1px solid #ffe5e5", background: "#fff5f5"}}
+                      title="Delete"
+                    >
+                      <Trash2 size={18} color="#d63031" />
+                    </button>
+                  )}
+                </div>
+
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
       </div>
     </>
   );
 }
 
-/* ================= STYLES (UNCHANGED) ================= */
-
 /* ================= STYLES ================= */
 
 const styles = {
-
   page: {
     minHeight: "100vh",
-    padding: "50px 80px",
-    background: "var(--page-bg)",
-    color: "var(--text-color)"
-  },
-
-  header: {
-    marginBottom: "40px"
-  },
-
-  title: {
-    fontSize: "34px",
-    fontWeight: "700"
-  },
-
-  subtitle: {
-    opacity: 0.7,
-    marginTop: "8px"
-  },
-
-  uploadBox: {
     padding: "40px",
-    borderRadius: "25px",
-    background: "var(--glass-bg)",
-    border: "2px dashed var(--card-border)",
-    backdropFilter: "blur(20px)",
-    textAlign: "center",
-    marginBottom: "50px",
-    cursor: "pointer",
+    background: "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)",
+    fontFamily: "'Inter', sans-serif"
   },
-
-  uploadLabel: {
-    fontSize: "18px",
-    fontWeight: "600",
-    cursor: "pointer",
-    display: "block"
-  },
-
-  uploadSub: {
-    display: "block",
-    fontSize: "13px",
-    marginTop: "8px",
-    opacity: 0.6
-  },
-
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
-    gap: "30px"
-  },
-
-  card: {
-    position: "relative",
-    padding: "30px",
-    borderRadius: "20px",
-    background: "var(--card-bg)",
-    border: "1px solid var(--card-border)",
-    boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+  header: {
+    marginBottom: "40px",
     textAlign: "center"
   },
-
-  badge: {
-    position: "absolute",
-    top: "15px",
-    right: "15px",
-    background: "linear-gradient(45deg,#00f5ff,#6a5acd)",
-    padding: "5px 12px",
-    borderRadius: "15px",
-    fontSize: "12px",
-    fontWeight: "bold"
+  title: {
+    fontSize: "32px",
+    fontWeight: "800",
+    color: "#2d3436",
+    marginBottom: "10px"
   },
-
-  fileIcon: {
-    fontSize: "40px",
-    marginBottom: "15px"
+  subtitle: {
+    color: "#636e72",
+    fontSize: "16px"
   },
-
-  fileName: {
-    fontSize: "16px",
-    marginBottom: "20px",
-    wordBreak: "break-word"
-  },
-
-  buttonRow: {
+  
+  // Doctor Controls
+  controlPanel: {
+    background: "#ffffff",
+    padding: "20px",
+    borderRadius: "16px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+    marginBottom: "40px",
     display: "flex",
-    justifyContent: "center",
-    gap: "10px",
-    flexWrap: "wrap"
+    alignItems: "flex-end",
+    gap: "20px",
+    flexWrap: "wrap",
+    maxWidth: "800px",
+    margin: "0 auto 40px"
   },
-
-  viewBtn: {
-    padding: "8px 14px",
-    borderRadius: "10px",
-    background: "#00f5ff",
-    color: "black",
-    textDecoration: "none",
+  selectGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    flex: 1,
+    minWidth: "250px"
+  },
+  label: {
+    fontSize: "13px",
     fontWeight: "600",
-    fontSize: "13px"
+    color: "#636e72",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px"
   },
-
-  downloadBtn: {
-    padding: "8px 14px",
+  select: {
+    width: "100%",
+    padding: "12px",
     borderRadius: "10px",
-    background: "#6a5acd",
-    color: "white",
-    textDecoration: "none",
-    fontWeight: "600",
-    fontSize: "13px"
+    border: "2px solid #dfe6e9",
+    background: "#fdfdfd",
+    fontSize: "14px",
+    outline: "none",
+    cursor: "pointer"
   },
-
-  deleteBtn: {
-    padding: "8px 14px",
-    borderRadius: "10px",
-    background: "#ff4d4d",
-    border: "none",
+  uploadWrapper: {
+    marginBottom: "2px" // Alignment fix
+  },
+  uploadBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "#6c5ce7",
     color: "white",
+    padding: "12px 24px",
+    borderRadius: "10px",
     fontWeight: "600",
     cursor: "pointer",
-    fontSize: "13px"
+    transition: "0.2s",
+    boxShadow: "0 4px 10px rgba(108, 92, 231, 0.3)"
+  },
+  
+  // States
+  loading: {
+    textAlign: "center",
+    color: "#b2bec3",
+    fontSize: "18px",
+    marginTop: "50px"
+  },
+  emptyState: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "10px",
+    color: "#b2bec3",
+    marginTop: "50px"
+  },
+
+  // Grid
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gap: "25px",
+    maxWidth: "1200px",
+    margin: "0 auto"
+  },
+  
+  // Card
+  card: {
+    background: "#ffffff",
+    borderRadius: "16px",
+    padding: "20px",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.05)",
+    border: "1px solid rgba(0,0,0,0.02)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    position: "relative",
+    overflow: "hidden"
+  },
+  iconBox: {
+    width: "60px",
+    height: "60px",
+    borderRadius: "12px",
+    background: "#f0f0ff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "15px"
+  },
+  cardContent: {
+    marginBottom: "20px",
+    width: "100%"
+  },
+  fileName: {
+    fontSize: "15px",
+    fontWeight: "700",
+    color: "#2d3436",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    marginBottom: "5px"
+  },
+  date: {
+    fontSize: "12px",
+    color: "#b2bec3",
+    fontWeight: "500"
+  },
+  actionRow: {
+    display: "flex",
+    gap: "10px",
+    marginTop: "auto",
+    width: "100%",
+    justifyContent: "center"
+  },
+  iconBtn: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "8px",
+    border: "1px solid #f1f2f6",
+    background: "#ffffff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "all 0.2s ease"
   }
 };

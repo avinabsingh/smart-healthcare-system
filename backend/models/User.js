@@ -1,17 +1,21 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-
-  name: String,
-  email: String,
-  password: String,
-
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  
   role: {
     type: String,
     enum: ["patient", "doctor"],
     default: "patient"
-  }
+  },
 
+  // Add this field. It will be ignored for patients.
+  specialty: {
+    type: String,
+    default: "General Physician" 
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);

@@ -6,6 +6,8 @@ import Appointment from "./Appointment";
 import Records from "./Records";
 import Profile from "./Profile";
 import DoctorAppointments from "./DoctorAppointments";
+import DoctorUploadRecords from "./DoctorUploadRecords";
+import PatientRecords from "./PatientRecords";
 
 import MyAppointments from "./MyAppointments";
 
@@ -26,6 +28,8 @@ function App() {
 
         <Route path="/records" element={<Records />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/doctor/upload-records" element={<DoctorUploadRecords />} />
+        <Route path="/patient/records" element={<PatientRecords />} />
 
       </Routes>
     </BrowserRouter>
