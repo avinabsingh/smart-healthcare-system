@@ -189,11 +189,36 @@ Make sure the following software is installed:
 
 ### Steps To Run The Project
 
-1. Clone the repository:
+  ### 1. Clone the repository:
 
-```bash
-git clone https://github.com/avinabsingh/smart-healthcare-system.git
-```
+  git clone https://github.com/avinabsingh/smart-healthcare-system.git
+  cd smart-healthcare-system
+
+ ### 2. Create a .env file inside the backend/ directory and add:
+
+  MONGO_URI=mongodb://mongo:27017/smarthealthcare
+  JWT_SECRET=your_jwt_secret_key
+  PORT=5000
+  (You can change the values as needed.)
+
+ ### 3. Make sure Docker Desktop is running.
+
+ ### 4. Start the application using Docker Compose:
+
+   docker-compose up --build
+
+ ### 5. Once the containers are running, access:
+
+  Frontend: http://localhost:3000
+  Backend API: http://localhost:5000
+  MongoDB: Runs internally inside Docker
+
+ ### What These Steps Do
+  cd smart-healthcare-system → Enter project folder
+  .env → Configure secrets and database connection
+  docker-compose up --build → Builds and runs frontend, backend, and database containers
+  Access via browser → Use the application locally
+
 
 ### Architecture Diagram
 
@@ -214,16 +239,19 @@ docs/wireframes_DA1/
 
 ### Design Philosophy (Summary)
 
-The Smart Healthcare Management System was designed with long-term maintainability, scalability, and clear separation of responsibilities in mind. A layered Client–Server architecture combined with the MVC pattern was selected to minimize tight coupling between components and allow independent development of frontend, backend, and database layers.
+The Smart Healthcare Management System was intentionally designed using a layered Client–Server architecture combined with the MVC pattern to ensure clear separation of concerns. This structure minimizes tight coupling between components and allows frontend, backend, and database layers to evolve independently.
 
-Security and modularity were treated as core design priorities rather than afterthoughts. JWT-based authentication and role-based access control (RBAC) ensure secure and stateless user management, while Docker containerization guarantees consistent deployment environments and future cloud readiness.
+The architecture was chosen to improve long-term maintainability and scalability. By isolating business logic, authentication, and data models into modular components, future enhancements such as analytics dashboards, pharmacy modules, mobile applications, or third-party integrations can be added without major refactoring.
 
-This architectural approach enables easier debugging, feature expansion, and integration of future modules such as analytics dashboards, mobile applications, or third-party healthcare systems.
+Security and deployment stability were treated as core design priorities. JWT-based authentication enables stateless and scalable user management, while Docker containerization ensures consistent environments across development and production. These decisions make the system cloud-ready and adaptable to future growth.
 
 ---
 
 ### System Architecture
 ![System Architecture](docs/design/architecture.png)
+
+The editable Draw.io source file is available at:
+docs/design/architecture.drawio
 
 The system follows a Layered Client–Server architecture combined with the MVC pattern to enforce clear separation between the presentation, business logic, and data layers. This structure minimizes tight coupling between components, improving maintainability and enabling independent development of frontend and backend modules. JWT-based authentication and role-based access control (RBAC) were implemented to ensure secure, stateless, and scalable user management for Patients, Doctors, and Admins. Additionally, Docker containerization and modular backend structuring were adopted to maintain environment consistency, simplify deployment, and support future scalability and cloud integration.
 
