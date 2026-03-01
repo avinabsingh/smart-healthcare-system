@@ -254,6 +254,9 @@ The updated user interface was first designed using Figma to establish a structu
 ### Sign Up Screen (Figma)
 ![Sign Up Figma](docs/design/SignUp_Screen_Figma.png)
 
+### Login Screen (Figma)
+![Login Figma](docs/design/Login_Screen_Figma.png)
+
 ### Patient Dashboard (Figma)
 ![Patient Dashboard Figma](docs/design/PatientDashboard_Screen_Figma.png)
 
