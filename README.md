@@ -210,13 +210,19 @@ Make sure the following software is installed:
  ### 5. Once the containers are running, access:
 
   Frontend: http://localhost:3000
+  
   Backend API: http://localhost:5000
+  
   MongoDB: Runs internally inside Docker
 
  ### What These Steps Do
+ 
   cd smart-healthcare-system → Enter project folder
+  
   .env → Configure secrets and database connection
+  
   docker-compose up --build → Builds and runs frontend, backend, and database containers
+  
   Access via browser → Use the application locally
 
 
