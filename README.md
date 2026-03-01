@@ -192,13 +192,17 @@ Make sure the following software is installed:
   ### 1. Clone the repository:
 
   git clone https://github.com/avinabsingh/smart-healthcare-system.git
+  
   cd smart-healthcare-system
 
  ### 2. Create a .env file inside the backend/ directory and add:
 
   MONGO_URI=mongodb://mongo:27017/smarthealthcare
+  
   JWT_SECRET=your_jwt_secret_key
+  
   PORT=5000
+  
   (You can change the values as needed.)
 
  ### 3. Make sure Docker Desktop is running.
