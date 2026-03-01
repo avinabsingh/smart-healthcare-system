@@ -249,31 +249,29 @@ All protected routes require JWT authentication.
 
 ## UI/UX Design (Figma Screens)
 
-The user interface was initially designed as low-fidelity wireframes and later refined into structured, high-fidelity Figma screens. The system follows a role-based dashboard design to ensure clarity, usability, and efficient healthcare workflow management.
+The updated user interface was first designed using Figma to establish a structured and user-friendly workflow. The system follows a role-based dashboard architecture to ensure clarity, usability, and efficient healthcare management for Patients and Doctors.
 
-### User Registration Screen
-![User Registration](docs/design/Signup-Screen.png)
+### Sign Up Screen (Figma)
+![Sign Up Figma](docs/design/SignUp_Screen_Figma.png)
 
-### Login Screen  
-![Login Screen](docs/design/login_screen.png)
+### Patient Dashboard (Figma)
+![Patient Dashboard Figma](docs/design/PatientDashboard_Screen_Figma.png)
 
-### Patient Dashboard
-![Patient Dashboard](docs/design/patient-dashboard.png)
+### Doctor Dashboard (Figma)
+![Doctor Dashboard Figma](docs/design/DoctorDashboard_Screen_Figma.png)
 
-### Doctor Dashboard
-![Doctor Dashboard](docs/design/doctor-dashboard.png)
+### Appointments Screen (Figma)
+![Appointments Figma](docs/design/Appointments_Screen_Figma.png)
 
-### My Appointments Screen
-![My Appointments](docs/design/Appointment-screen.png)
+### Book Appointment Screen (Figma)
+![Book Appointment Figma](docs/design/BookAppointment_Screen_Figma.png)
 
-<p>
-  <img src="docs/design/appointment-booking.jpeg" width="550"/>
-</p>
+### Medical Records Screen (Figma)
+![Medical Records Figma](docs/design/MedicalRecords_Screen_Figma.png)
 
-### Medical Records Interface
-![Medical Records](docs/design/medical-records.png)
 
 ---
+
 
 ### Design Highlights
 
@@ -289,78 +287,72 @@ The UI focuses on simplicity, intuitive navigation, and efficient interaction be
 
 ---
 
-### Implemented Web Application Screenshots
+## Implemented Web Application Screenshots
 
-#### User Registration
-![User Registration](docs/design/SignUpScreen_website.png)
+### User Registration (Website)
+![Sign Up Website](docs/design/SignUp_Screen_Website.png)
 
-This screen allows new users (Patients or Doctors) to create an account by providing essential details such as name, email, password, and role selection. Passwords are securely hashed using bcrypt before storage, and validation mechanisms ensure data integrity during registration.
-
----
-
-#### Login Screen
-![Login Screen](docs/design/login_screen_website.png)
-
-The Login Screen enables registered users (Patients, Doctors, and Admins) to securely access the system. It verifies credentials using JWT-based authentication and redirects users to their respective dashboards based on role. Proper validation messages are displayed for incorrect credentials or missing input fields.
+This screen allows new users (Patients or Doctors) to create an account by providing essential details such as name, email, password, and role selection. Passwords are securely hashed using bcrypt before storage, and validation ensures secure and consistent data entry.
 
 ---
 
-#### Patient Dashboard
-![Patient Dashboard](docs/design/PatientDashboard_website.png)
+### Patient Dashboard (Website)
+![Patient Dashboard Website](docs/design/PatientDashboard_Screen_Website.png)
 
-The Patient Dashboard provides an overview of booked appointments, medical history, and profile details. Patients can schedule new appointments, upload medical records, and track upcoming consultations in an intuitive and user-friendly interface.
-
----
-
-#### Patient Dashboard (Light Mode)
-![Patient Dashboard Light Mode](docs/design/PatientDashboard_website_light_mode.png)
-
-The light mode version of the Patient Dashboard demonstrates UI flexibility and improved accessibility. It maintains consistent functionality while offering an alternative visual theme for enhanced user experience.
-
----
-#### Profile Management Screen
-![Profile Screen](docs/design/ProfileScreen_website.png)
-
-The Profile Management screen allows users to view and update their personal information. Users can modify profile details while sensitive fields remain protected. All updates are validated and securely stored in the database.
+The Patient Dashboard provides a centralized overview of appointments, profile details, and medical records. Patients can navigate easily to book appointments, manage their records, and track consultations.
 
 ---
 
-#### Doctor Dashboard
-![Doctor Dashboard](docs/design/DoctorDashboard_website.png)
+### Doctor Dashboard (Website)
+![Doctor Dashboard Website](docs/design/DoctorDashboard_Screen_Website.png)
 
-The Doctor Dashboard enables doctors to view scheduled appointments, access patient medical records, and manage their availability. Role-based authorization ensures doctors can only access assigned patient data, maintaining privacy and security.
-
----
-
-#### Doctor Profile Screen
-![Doctor Profile](docs/design/DoctorProfile_website.png)
-
-The Doctor Profile screen displays professional information including specialization, availability, and contact details. This helps patients make informed decisions while booking appointments.
+The Doctor Dashboard enables doctors to view scheduled appointments, access patient medical records, and manage consultations efficiently with role-based access control.
 
 ---
 
-#### Appointment Checking (Patient View)
-![Appointments Checking](docs/design/AppointmentsCheckingScreen_website.png)
+### Booking Appointment Interface
+![Booking Appointment Website](docs/design/BookingAppointment_Screen_Website.png)
 
-This interface allows patients to review their scheduled, completed, or cancelled appointments. It provides status indicators and structured appointment details such as date, time, and assigned doctor.
-
----
-
-#### Appointment Booking
-![Appointment Booking](docs/design/AppointmentBooking_website.png)
-
-This interface allows patients to select available doctors, choose preferred dates and time slots, and confirm appointments. The booking system communicates with the backend via REST APIs to store and retrieve appointment data securely.
+Patients can select available doctors, choose suitable dates and time slots, and confirm their appointment. The system interacts with REST APIs to securely store and retrieve booking data.
 
 ---
 
-#### Doctor Appointments Management
-![Doctor Appointments](docs/design/DoctorAppoinmentsScrren_website.png)
+### My Appointments (Patient View)
+![My Appointments Website](docs/design/MyAppointmentsScreen_Website.png)
 
-This screen enables doctors to manage incoming appointment requests. Doctors can view patient details, appointment schedules, and update consultation status. The interface ensures efficient appointment handling and workflow management.
+This interface displays all scheduled, completed, or cancelled appointments with proper status indicators for better tracking and transparency.
 
 ---
 
-#### Medical Record Upload
-![Medical Record Upload](docs/design/UploadingMedicalRecords_website.png)
+### Doctor Appointments Management
+![Doctor Appointments Website](docs/design/PatientAppoint_Screen_Doctor_Website.png)
 
-This module allows patients to upload medical reports and documents, which are securely stored and accessible only to authorized doctors. File validation and authentication middleware ensure secure handling of sensitive healthcare information.
+Doctors can manage patient appointments, review consultation details, and update appointment statuses through a structured and intuitive interface.
+
+---
+
+### Doctor Profile Page
+![Doctor Profile Website](docs/design/Doctor_Profile_Website.png)
+
+The Doctor Profile page displays specialization, availability, and professional information to help patients make informed booking decisions.
+
+---
+
+### Patient Profile Page
+![Patient Profile Website](docs/design/Patient_Profile_Website.png)
+
+This screen allows patients to view and update personal details securely while maintaining validation and database consistency.
+
+---
+
+### Medical Records (Website)
+![Medical Records Website](docs/design/Medical_Records_Screen_Website.png)
+
+Patients can upload and manage medical reports securely. Uploaded records are accessible only to authorized doctors, ensuring privacy and data protection.
+
+---
+
+### Patient Medical Records View
+![Patient Medical Record Website](docs/design/Patient_MedicalRecord_Screen_Website.png)
+
+This interface allows patients to view their previously uploaded medical documents in a structured format.
