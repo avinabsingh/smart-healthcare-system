@@ -116,17 +116,33 @@ The following tools were used during development:
 
 ## Project Structure
 
+## Project Structure
+
 ```
 smart-healthcare-system/
 │
 ├── frontend/                         # React frontend application
 │   ├── public/                       # Static assets
-│   ├── src/                          # Source code
-│   │   ├── components/               # Reusable UI components
-│   │   ├── pages/                    # Page-level components (Dashboard, Login, etc.)
-│   │   ├── services/                 # API service calls
-│   │   ├── context/                  # Authentication & global state management
-│   │   └── App.js                    # Main React entry
+│   ├── src/                          # React source code
+│   │   ├── App.js                    # Main application component
+│   │   ├── App.css                   # Global styles
+│   │   ├── index.js                  # React entry point
+│   │   ├── index.css                 # Base styling
+│   │   ├── Login.js                  # Login page
+│   │   ├── Signup.js                 # Registration page
+│   │   ├── Dashboard.js              # Role-based dashboard
+│   │   ├── Appointment.js            # Appointment booking
+│   │   ├── MyAppointments.js         # Patient appointments view
+│   │   ├── DoctorAppointments.js     # Doctor appointment management
+│   │   ├── DoctorUploadRecords.js    # Doctor medical record upload
+│   │   ├── PatientRecords.js         # Patient records view
+│   │   ├── Records.js                # Records management logic
+│   │   ├── Profile.js                # User profile page
+│   │   ├── Navbar.js                 # Navigation bar component
+│   │   ├── ThemeContext.js           # Theme & global context
+│   │   ├── reportWebVitals.js        # Performance monitoring
+│   │   └── setupTests.js             # Testing configuration
+│   │
 │   └── package.json
 │
 ├── backend/                          # Express backend server
@@ -142,10 +158,6 @@ smart-healthcare-system/
 │   └── design/                       # Architecture diagrams & UI screenshots
 │       ├── architecture.drawio
 │       ├── architecture.png
-│       ├── login.png
-│       ├── patient-dashboard.png
-│       ├── doctor-dashboard.png
-│       ├── admin-dashboard.png
 │       └── ...
 │
 ├── docker-compose.yml                # Docker container configuration
