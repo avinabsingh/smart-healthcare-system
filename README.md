@@ -114,45 +114,50 @@ The following tools were used during development:
 - Git and GitHub (Version control)
 - Visual Studio Code (Code editor)
 
-## Project Structure
+
 
 ## Project Structure
 
 ```
-smart-healthcare-system/
+Smart_HealthCare_Management_System/
 │
 ├── frontend/                         # React frontend application
 │   ├── public/                       # Static assets
 │   ├── src/                          # React source code
-│   │   ├── App.js                    # Main application component
-│   │   ├── App.css                   # Global styles
-│   │   ├── index.js                  # React entry point
-│   │   ├── index.css                 # Base styling
-│   │   ├── Login.js                  # Login page
-│   │   ├── Signup.js                 # Registration page
-│   │   ├── Dashboard.js              # Role-based dashboard
-│   │   ├── Appointment.js            # Appointment booking
-│   │   ├── MyAppointments.js         # Patient appointments view
-│   │   ├── DoctorAppointments.js     # Doctor appointment management
-│   │   ├── DoctorUploadRecords.js    # Doctor medical record upload
-│   │   ├── PatientRecords.js         # Patient records view
-│   │   ├── Records.js                # Records management logic
-│   │   ├── Profile.js                # User profile page
-│   │   ├── Navbar.js                 # Navigation bar component
-│   │   ├── ThemeContext.js           # Theme & global context
-│   │   ├── reportWebVitals.js        # Performance monitoring
-│   │   └── setupTests.js             # Testing configuration
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   ├── index.js
+│   │   ├── index.css
+│   │   ├── Login.js
+│   │   ├── Signup.js
+│   │   ├── Dashboard.js
+│   │   ├── Appointment.js
+│   │   ├── MyAppointments.js
+│   │   ├── DoctorAppointments.js
+│   │   ├── DoctorUploadRecords.js
+│   │   ├── PatientRecords.js
+│   │   ├── Records.js
+│   │   ├── Profile.js
+│   │   ├── Navbar.js
+│   │   ├── ThemeContext.js
+│   │   ├── reportWebVitals.js
+│   │   └── setupTests.js
 │   │
-│   └── package.json
+│   ├── Dockerfile
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── backend/                          # Express backend server
-│   ├── routes/                       # API route definitions
-│   ├── controllers/                  # Business logic
-│   ├── models/                       # Mongoose database schemas
-│   ├── middleware/                   # JWT authentication & authorization
-│   ├── config/                       # Database configuration
-│   ├── server.js                     # Main server entry point
-│   └── package.json
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── uploads/                      # Uploaded medical files
+│   ├── server.js
+│   ├── Dockerfile
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── docs/
 │   └── design/                       # Architecture diagrams & UI screenshots
@@ -160,11 +165,12 @@ smart-healthcare-system/
 │       ├── architecture.png
 │       └── ...
 │
-├── docker-compose.yml                # Docker container configuration
-├── README.md                         # Project documentation
-└── .env                              # Environment variables (not committed)
+├── docker-compose.yml
+├── package.json                      # Root project config
+├── package-lock.json
+├── README.md
+└── .gitignore
 ```
-
 ---
 
 ## Quick Start – Local Development (Docker)
