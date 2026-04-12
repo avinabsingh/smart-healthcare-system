@@ -12,6 +12,8 @@ services:
       - "5000:5000"
     depends_on:
       - mongo
+    env_file:
+      - ./backend/.env # ✅ FIXED (moved inside backend)
 
   frontend:
     build: ./frontend

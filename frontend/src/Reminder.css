@@ -1,0 +1,120 @@
+.reminder-page-container {
+  min-height: calc(100vh - 70px); /* Assuming your navbar is around 70px */
+  background-color: #fbfcfd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.reminder-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+}
+
+.reminder-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.reminder-header h2 {
+  color: #2d3436;
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.reminder-header p {
+  color: #a4b0be;
+  font-size: 15px;
+  margin: 0;
+}
+
+.reminder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input Group Styling */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  color: #a4b0be;
+  pointer-events: none; /* So clicking the icon still focuses the input */
+  transition: color 0.3s ease;
+}
+
+.styled-input {
+  width: 100%;
+  padding: 16px 16px 16px 48px; /* Extra left padding for the icon */
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #2d3436;
+  background-color: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.styled-input::placeholder {
+  color: #b2bec3;
+}
+
+/* Beautiful Focus State */
+.styled-input:focus {
+  background-color: #ffffff;
+  border-color: #6c5ce7;
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+}
+
+.styled-input:focus + .input-icon,
+.input-group:focus-within .input-icon {
+  color: #6c5ce7;
+}
+
+/* Customizing the datetime-local picker icon for Webkit */
+.styled-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.styled-input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Submit Button */
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px;
+  margin-top: 10px;
+  background-color: #6c5ce7;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
+  transition: background-color 0.3s ease;
+}

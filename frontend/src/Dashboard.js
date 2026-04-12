@@ -1,231 +1,344 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Navbar from "./Navbar";
 import { 
-  Calendar, Clock, User, FileText, 
-  Activity, ArrowRight, TrendingUp, 
-  ClipboardList, UploadCloud // Added UploadCloud icon for doctor
+  Calendar, Clock, User, FileText, Activity, 
+  ArrowRight, TrendingUp, MessageSquare, 
+  LogOut, LayoutDashboard, ShieldAlert, Zap, AlertCircle,
+  MapPin, Info // Added Info icon for About
 } from "lucide-react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
-  const [appointments, setAppointments] = useState([]);
+  const role = localStorage.getItem("role") || "patient";
+  const [stats, setStats] = useState({
+  totalUsers: 0,
+  totalPatients: 0,
+  totalDoctors: 0
+});
+  const userName = localStorage.getItem("name") || role;
   const [time, setTime] = useState(new Date());
 
-  // ... (Keep existing Time and Fetch logic same as before) ...
-  /* ================= TIME ================= */
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const timer = setInterval(() => setTime(new Date()), 1000);
+  return () => clearInterval(timer);
+}, []);
 
-  /* ================= FETCH APPOINTMENTS ================= */
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const endpoint = role === "doctor" 
-      ? "http://localhost:5000/api/doctor/appointments"
-      : "http://localhost:5000/api/patient/appointments";
+useEffect(() => {
+  if (role === "admin") {
+    fetchAdminStats();
+  }
+}, [role]);
 
-    fetch(endpoint, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setAppointments(data))
-      .catch(err => console.error("Error fetching appointments:", err));
-  }, [role]);
 
-  // ... (Keep existing Calendar logic same as before) ...
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-  const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const hasAppointment = (day) => {
-    return appointments.some(app => {
-      const appDate = new Date(app.date);
-      return appDate.getDate() === day && 
-             appDate.getMonth() === currentMonth &&
-             appDate.getFullYear() === currentYear;
-    });
+
+  const fetchAdminStats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("http://localhost:5000/api/admin/stats", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await res.json();
+      setStats(data);
+
+    } catch (err) {
+      console.error("Admin Stats Error:", err);
+    }
   };
-  const days = [];
-  for (let i = 0; i < firstDay; i++) days.push(null);
-  for (let i = 1; i <= totalDays; i++) days.push(i);
+
+  // --- SOS BACKEND INTEGRATION ---
+  const handleSOSClick = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const locationStr = `Lat: ${position.coords.latitude}, Long: ${position.coords.longitude}`;
+          await sendSOS(locationStr);
+        },
+        async (error) => {
+          console.error("Location error:", error);
+          await sendSOS("Location access denied by user");
+        }
+      );
+    } else {
+      sendSOS("Geolocation not supported");
+    }
+  };
+
+  const sendSOS = async (locationValue) => {
+    try {
+      const email = prompt("Enter emergency contact email:");
+      if (!email) {
+        alert("Email is required to notify your emergency contact!");
+        return;
+      }
+      const res = await fetch("http://localhost:5000/api/sos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ location: locationValue, email }),
+      });
+      const data = await res.json();
+      alert(data.message || "SOS Sent Successfully!");
+    } catch (err) {
+      console.error("SOS Error:", err);
+      alert("Failed to send SOS. Please check your connection.");
+    }
+  };
+
+  const features = role !== "admin" ? [
+  ...(role === "patient" ? [{
+    title: "Health Risk Analysis",
+    desc: "Our AI-powered engine analyzes your vitals to predict potential health risks before they become issues.",
+    path: "/risk",
+    icon: <TrendingUp size={32} />,
+    color: "#6c5ce7"
+  }] : []),
+
+  {
+    title: "Smart Appointments",
+    desc: "Seamlessly schedule visits with specialists. View your upcoming and past medical consultations in one place.",
+    path: role === "doctor" ? "/doctor-appointments" : "/appointment",
+    icon: <Calendar size={32} />,
+    color: "#00b894"
+  },
+
+  {
+    title: "Medical Vault",
+    desc: "Securely access your lab results, prescriptions, and digital health records with end-to-end encryption.",
+    path: role === "doctor" ? "/doctor/upload-records" : "/patient/records",
+    icon: <FileText size={32} />,
+    color: "#ff7675"
+  },
+
+  {
+    title: "AI Health Assistant",
+    desc: "Got questions? Our 24/7 Health Chatbot provides immediate guidance based on verified medical data.",
+    path: "/chatbot",
+    icon: <MessageSquare size={32} />,
+    color: "#0984e3"
+  }
+
+] : [];
 
 
   return (
-    <>
-      <Navbar />
-      <div style={styles.page}>
-        {/* ... (Keep Hero Section same as before) ... */}
-        <motion.div style={styles.hero} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={styles.heroContent}>
-            <h1 style={styles.greeting}>Hello, <span style={styles.highlight}>{role === "doctor" ? "Doctor" : "Patient"}</span></h1>
-            <p style={styles.dateText}>
-              <Calendar size={20} style={{ marginBottom: -3 }} /> 
-              {today.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-          </div>
-          <div style={styles.clockWrapper}>
-            <Clock size={24} color="#6c5ce7" />
-            <span style={styles.time}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-          </div>
-        </motion.div>
-
-        <div style={styles.mainGrid}>
-          <div style={styles.leftColumn}>
-            <h3 style={styles.sectionTitle}>Quick Actions</h3>
-            
-            {/* ================= UPDATED ACTION CARDS ================= */}
-            <div style={styles.cardGrid}>
-              
-              {role === "patient" && (
-                <>
-                  <ActionCard 
-                    icon={<Calendar size={28} color="#ffffff" />} 
-                    title="Book Appointment" 
-                    desc="Schedule a new visit"
-                    color="linear-gradient(135deg, #6c5ce7, #a29bfe)"
-                    onClick={() => navigate("/appointment")} 
-                  />
-                  <ActionCard 
-                    icon={<Activity size={28} color="#ffffff" />} 
-                    title="My Appointments" 
-                    desc="Check your status"
-                    color="linear-gradient(135deg, #00b894, #55efc4)"
-                    onClick={() => navigate("/my-appointments")} 
-                  />
-                  {/* PATIENT VIEW: See Records */}
-                  <ActionCard 
-                    icon={<ClipboardList size={28} color="#ffffff" />} 
-                    title="Medical Records" 
-                    desc="View & Download"
-                    color="linear-gradient(135deg, #fd79a8, #e84393)"
-                    onClick={() => navigate("/patient/records")} 
-                  />
-                </>
-              )}
-
-              {role === "doctor" && (
-                <>
-                  <ActionCard 
-                    icon={<FileText size={28} color="#ffffff" />} 
-                    title="Patient Requests" 
-                    desc="View upcoming visits"
-                    color="linear-gradient(135deg, #0984e3, #74b9ff)"
-                    onClick={() => navigate("/doctor-appointments")} 
-                  />
-                  {/* DOCTOR VIEW: Upload Records */}
-                  <ActionCard 
-                    icon={<UploadCloud size={28} color="#ffffff" />} 
-                    title="Upload Records" 
-                    desc="Attach files to patients"
-                    color="linear-gradient(135deg, #6c5ce7, #a29bfe)"
-                    onClick={() => navigate("/doctor/upload-records")} 
-                  />
-                </>
-              )}
-
-              <ActionCard 
-                icon={<User size={28} color="#ffffff" />} 
-                title="Profile" 
-                desc="Manage your account"
-                color="linear-gradient(135deg, #e17055, #fab1a0)"
-                onClick={() => navigate("/profile")} 
-              />
-            </div>
-
-            {/* ... (Keep Stats Box same as before) ... */}
-            <motion.div style={styles.statsBox} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <div style={styles.statItem}>
-                <div style={styles.statIconBg}><TrendingUp size={28} color="#6c5ce7" /></div>
-                <div>
-                  <div style={styles.statValue}>{appointments.length}</div>
-                  <div style={styles.statLabel}>Total Appointments</div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* ... (Keep Calendar same as before) ... */}
-          <motion.div style={styles.calendarContainer} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-             {/* Calendar code remains exactly the same as your previous version */}
-             <div style={styles.calendarHeader}>
-              <h3 style={styles.calendarTitle}>{today.toLocaleString("default", { month: "long" })} {currentYear}</h3>
-             </div>
-             <div style={styles.weekDaysGrid}>
-               {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((d, i) => <div key={i} style={styles.weekday}>{d}</div>)}
-             </div>
-             <div style={styles.daysGrid}>
-               {days.map((day, index) => {
-                 if (!day) return <div key={index}></div>;
-                 const isToday = day === today.getDate();
-                 const isBooked = hasAppointment(day);
-                 return (
-                   <div key={index} style={{...styles.dayCell, ...(isToday ? styles.todayCell : {}), ...(isBooked ? styles.bookedCell : {})}}>
-                     {day}
-                   </div>
-                 );
-               })}
-             </div>
-          </motion.div>
+    <div style={styles.dashboardContainer}>
+      {/* 1. SIDEBAR */}
+      <nav style={styles.sidebar}>
+        <div style={styles.logoArea}>
+          <h2 style={styles.logoText}>Health<span style={{ color: "#6c5ce7" }}>Care</span></h2>
+          <p style={styles.roleTag}>{role.toUpperCase()} PORTAL</p>
         </div>
-      </div>
-    </>
+
+        <div style={styles.navLinks}>
+          <NavItem icon={<LayoutDashboard size={22}/>} label="Dashboard" active onClick={() => navigate("/dashboard")} />
+          <NavItem icon={<Activity size={22}/>} label="My Activity" onClick={() => navigate("/my-appointments")} />
+          <NavItem icon={<MapPin size={22}/>} label="Nearby Hospitals" onClick={() => navigate("/hospitals")} />
+          <NavItem icon={<User size={22}/>} label="My Profile" onClick={() => navigate("/profile")} />
+          {/* NEW ABOUT LINK ADDED HERE */}
+          <NavItem icon={<Info size={22}/>} label="About Us" onClick={() => navigate("/about")} />
+
+          <NavItem icon={<Clock size={22}/>} label="Reminders" onClick={() => navigate("/reminder")} />
+          
+          
+        </div>
+
+
+
+        <div style={{ padding: "0 20px" }}>
+           <motion.button 
+             style={styles.reminderBtn}
+             whileHover={{ scale: 1.02 }}
+             whileTap={{ scale: 0.98 }}
+             onClick={() => navigate("/reminder")}
+           >
+             <Clock size={20} color="#fff" />
+             <span>Set Reminder</span>
+           </motion.button>
+        </div>
+
+        {/* --- SOS HUB --- */}
+        <div style={styles.sosSection}>
+          <div style={styles.sosLabelContainer}>
+            <AlertCircle size={14} color="#d63031" />
+            <span style={styles.sosStatusText}>Emergency Protocol Active</span>
+          </div>
+          <div style={styles.sosContainer}>
+            <motion.div 
+              style={styles.sosRadar}
+              animate={{ scale: [1, 1.4], opacity: [0.3, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
+            />
+            <motion.button 
+              style={styles.sosButton}
+              whileHover={{ scale: 1.02, backgroundColor: "#c0392b" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleSOSClick}
+            >
+              <div style={styles.sosIconBox}>
+                <ShieldAlert size={28} color="#fff" strokeWidth={2.5} />
+              </div>
+              <div style={styles.sosTextLabel}>
+                <span style={styles.sosMainText}>SEND SOS</span>
+                <span style={styles.sosSubText}>Instant Help 24/7</span>
+              </div>
+              <Zap size={16} style={styles.sosZap} fill="white" />
+            </motion.button>
+          </div>
+        </div>
+
+        <div style={styles.sidebarFooter}>
+            <button style={styles.logoutBtn} onClick={() => navigate("/")}>
+                <LogOut size={18} /> <span>Sign Out</span>
+            </button>
+        </div>
+      </nav>
+
+      {/* 2. MAIN CONTENT */}
+      <main style={styles.mainContent}>
+        <header style={styles.header}>
+          <div>
+            <h1 style={styles.greeting}>Hello, <span style={styles.accentText}>{userName.charAt(0).toUpperCase() + userName.slice(1)}</span></h1>
+            <p style={styles.dateDisplay}>{time.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          </div>
+          <div style={styles.clockBox}>
+             <Clock size={20} color="#6c5ce7" />
+             <span style={styles.timeText}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+        </header>
+
+        {role === "admin" && (
+          <section style={styles.featureSection}>
+            <h3 style={styles.sectionTitle}>Admin Overview</h3>
+
+            <div style={{
+              display: "flex",
+              gap: "20px",
+              marginBottom: "30px"
+            }}>
+              <div style={styles.adminCard}>
+                <h4>Total Users</h4>
+                <p>{stats.totalUsers}</p>
+              </div>
+
+              <div style={styles.adminCard}>
+                <h4>Total Patients</h4>
+                <p>{stats.totalPatients}</p>
+              </div>
+
+              <div style={styles.adminCard}>
+                <h4>Total Doctors</h4>
+                <p>{stats.totalDoctors}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section style={styles.featureSection}>
+          <h3 style={styles.sectionTitle}>Platform Services</h3>
+          <div style={styles.featureColumn}>
+            {features.map((item, index) => (
+              <motion.div 
+                key={index} 
+                style={styles.featureRow}
+                whileHover={{ x: 12, border: "2px solid #6c5ce7", backgroundColor: "#fff" }}
+                onClick={() => navigate(item.path)}
+              >
+                <div style={{ ...styles.iconBox, backgroundColor: item.color }}>
+                  {item.icon}
+                </div>
+                <div style={styles.textColumn}>
+                  <h4 style={styles.featureTitle}>{item.title}</h4>
+                  <p style={styles.featureDesc}>{item.desc}</p>
+                </div>
+                <ArrowRight size={24} color="#dfe6e9" />
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
-// ... (Keep ActionCard Component and Styles same as before) ...
-function ActionCard({ icon, title, desc, color, onClick }) {
-  return (
-    <motion.div
-      style={{...styles.actionCard, background: color}}
-      onClick={onClick}
-      whileHover={{ y: -8, boxShadow: "0 15px 30px rgba(0,0,0,0.2)" }}
-      whileTap={{ scale: 0.96 }}
-    >
-      <div style={styles.iconBox}>{icon}</div>
-      <div style={{ flex: 1 }}>
-        <h4 style={styles.cardTitle}>{title}</h4>
-        <p style={styles.cardDesc}>{desc}</p>
-      </div>
-      <ArrowRight size={24} color="rgba(255,255,255,0.8)" />
-    </motion.div>
-  );
+function NavItem({ icon, label, active, onClick }) {
+    return (
+        <div 
+          onClick={onClick}
+          style={{...styles.navItem, color: active ? "#6c5ce7" : "#2d3436", backgroundColor: active ? "#f3f0ff" : "transparent" }}
+        >
+            {icon} <span>{label}</span>
+        </div>
+    );
 }
 
 const styles = {
-  // ... (Paste your previous styles here, they are compatible)
-  page: { minHeight: "100vh", padding: "50px 80px", background: "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)", fontFamily: "'Poppins', sans-serif", color: "#2d3436" },
-  hero: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "50px" },
-  heroContent: { display: "flex", flexDirection: "column", gap: "8px" },
-  greeting: { fontSize: "42px", fontWeight: "800", color: "#2d3436", letterSpacing: "-1px", lineHeight: "1.2", margin: 0 },
-  highlight: { color: "#6c5ce7", background: "linear-gradient(120deg, transparent 0%, transparent 60%, rgba(108, 92, 231, 0.2) 60%, rgba(108, 92, 231, 0.2) 100%)" },
-  dateText: { color: "#636e72", fontSize: "18px", fontWeight: "500", display: "flex", alignItems: "center", gap: "10px", marginTop: "5px" },
-  clockWrapper: { background: "#ffffff", padding: "15px 30px", borderRadius: "60px", boxShadow: "0 8px 25px rgba(0,0,0,0.08)", display: "flex", alignItems: "center", gap: "15px", border: "1px solid rgba(0,0,0,0.05)" },
-  time: { fontSize: "26px", fontWeight: "700", color: "#2d3436", fontVariantNumeric: "tabular-nums" },
-  mainGrid: { display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "50px", maxWidth: "1400px", margin: "0 auto" },
-  leftColumn: { display: "flex", flexDirection: "column", gap: "40px" },
-  sectionTitle: { fontSize: "26px", fontWeight: "700", color: "#2d3436", marginBottom: "25px", letterSpacing: "-0.5px" },
-  cardGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "25px" },
-  actionCard: { padding: "30px", borderRadius: "24px", display: "flex", alignItems: "center", gap: "20px", cursor: "pointer", color: "#ffffff", boxShadow: "0 10px 25px rgba(0,0,0,0.1)", position: "relative", overflow: "hidden" },
-  iconBox: { background: "rgba(255,255,255,0.25)", width: "60px", height: "60px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(5px)" },
-  cardTitle: { fontSize: "20px", fontWeight: "700", marginBottom: "5px", letterSpacing: "0.5px" },
-  cardDesc: { fontSize: "15px", opacity: 0.95, fontWeight: "500" },
-  statsBox: { background: "#ffffff", borderRadius: "24px", padding: "35px", boxShadow: "0 15px 40px rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.03)" },
-  statItem: { display: "flex", alignItems: "center", gap: "25px" },
-  statIconBg: { width: "60px", height: "60px", borderRadius: "50%", background: "rgba(108, 92, 231, 0.1)", display: "flex", alignItems: "center", justifyContent: "center" },
-  statValue: { fontSize: "42px", fontWeight: "800", color: "#2d3436", lineHeight: "1", marginBottom: "5px" },
-  statLabel: { fontSize: "16px", color: "#636e72", fontWeight: "500" },
-  calendarContainer: { background: "#ffffff", padding: "40px", borderRadius: "30px", boxShadow: "0 25px 50px rgba(0,0,0,0.08)", height: "fit-content", border: "1px solid rgba(0,0,0,0.03)" },
-  calendarHeader: { textAlign: "center", marginBottom: "30px", borderBottom: "1px solid #f1f2f6", paddingBottom: "20px" },
-  calendarTitle: { fontSize: "24px", fontWeight: "700", color: "#2d3436", textTransform: "capitalize" },
-  weekDaysGrid: { display: "grid", gridTemplateColumns: "repeat(7, 1fr)", textAlign: "center", marginBottom: "15px" },
-  weekday: { fontSize: "15px", fontWeight: "700", color: "#b2bec3", textTransform: "uppercase", letterSpacing: "1px" },
-  daysGrid: { display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "12px" },
-  dayCell: { height: "50px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "14px", fontSize: "16px", fontWeight: "600", color: "#2d3436", cursor: "default", transition: "all 0.3s ease", background: "#f8f9fa" },
-  todayCell: { background: "linear-gradient(135deg, #ff9ff3, #feca57)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 15px rgba(254, 202, 87, 0.4)" },
-  bookedCell: { background: "linear-gradient(135deg, #6c5ce7, #a29bfe)", color: "#ffffff", fontWeight: "800", boxShadow: "0 4px 15px rgba(108, 92, 231, 0.4)" },
+  dashboardContainer: { display: "flex", height: "100vh", backgroundColor: "#fbfcfd", overflow: "hidden" },
+  sidebar: { width: "340px", backgroundColor: "#fff", borderRight: "1px solid #f0f0f0", display: "flex", flexDirection: "column", padding: "40px 28px" },
+  logoArea: { marginBottom: "45px", paddingLeft: "10px" },
+  logoText: { fontSize: "28px", fontWeight: "900", margin: 0, color: "#2d3436", letterSpacing: "-0.5px" },
+  roleTag: { fontSize: "11px", color: "#6c5ce7", fontWeight: "800", marginTop: "4px", letterSpacing: "1.5px" },
+  navLinks: { flex: 1, display: "flex", flexDirection: "column", gap: "10px" },
+  navItem: { display: "flex", alignItems: "center", gap: "18px", padding: "16px 20px", borderRadius: "16px", cursor: "pointer", fontWeight: "700", fontSize: "16px", transition: "0.2s cubic-bezier(0.4, 0, 0.2, 1)" },
+  sosSection: { margin: "30px 0", padding: "24px", backgroundColor: "#fff5f5", borderRadius: "24px", border: "1px solid #ffe3e3" },
+  sosLabelContainer: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" },
+  sosStatusText: { fontSize: "11px", fontWeight: "800", color: "#d63031", textTransform: "uppercase", letterSpacing: "0.5px" },
+  sosContainer: { position: "relative", width: "100%", height: "90px" },
+  sosRadar: { position: "absolute", width: "100%", height: "100%", backgroundColor: "rgba(214, 48, 49, 0.2)", borderRadius: "18px" },
+  sosButton: { position: "relative", width: "100%", height: "100%", backgroundColor: "#d63031", border: "none", borderRadius: "18px", display: "flex", alignItems: "center", padding: "0 20px", gap: "18px", cursor: "pointer", boxShadow: "0 10px 30px rgba(214, 48, 49, 0.25)", zIndex: 1 },
+  sosIconBox: { width: "52px", height: "52px", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" },
+  sosTextLabel: { display: "flex", flexDirection: "column", alignItems: "flex-start" },
+  sosMainText: { color: "#fff", fontSize: "20px", fontWeight: "900", letterSpacing: "0.5px" },
+  sosSubText: { color: "rgba(255,255,255,0.8)", fontSize: "12px", fontWeight: "600" },
+  sosZap: { position: "absolute", top: "12px", right: "12px", opacity: 0.6 },
+  sidebarFooter: { paddingTop: "25px", borderTop: "1.5px solid #f8f9fa" },
+  logoutBtn: { background: "none", border: "none", color: "#a4b0be", cursor: "pointer", display: "flex", alignItems: "center", gap: "12px", fontWeight: "700", fontSize: "15px" },
+  
+  /* --- ADJUSTED MAIN CONTENT SIZING --- */
+  mainContent: { flex: 1, padding: "40px 60px", overflowY: "auto" }, // Reduced top/bottom padding
+  header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "35px" }, // Reduced bottom margin
+  greeting: { fontSize: "42px", fontWeight: "900", margin: 0, color: "#2d3436", letterSpacing: "-1.5px" }, // Slightly smaller greeting
+  accentText: { color: "#6c5ce7" },
+  dateDisplay: { color: "#a4b0be", fontWeight: "600", fontSize: "16px", marginTop: "8px" },
+  clockBox: { padding: "14px 28px", backgroundColor: "#fff", borderRadius: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)", display: "flex", gap: "14px", alignItems: "center" },
+  timeText: { fontSize: "20px", fontWeight: "800", color: "#2d3436" },
+  featureSection: { maxWidth: "1200px" },
+  sectionTitle: { fontSize: "22px", fontWeight: "800", marginBottom: "25px", color: "#2d3436", letterSpacing: "1px" }, // Reduced bottom margin
+  featureColumn: { display: "flex", flexDirection: "column", gap: "18px" }, // Reduced gap between cards
+  
+  /* --- ADJUSTED CARD SIZING --- */
+  featureRow: { display: "flex", alignItems: "center", backgroundColor: "transparent", padding: "24px 30px", borderRadius: "24px", cursor: "pointer", border: "2px solid #f1f2f6", transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }, // Reduced padding and border radius
+  iconBox: { width: "64px", height: "64px", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", marginRight: "25px", flexShrink: 0 }, // Shrunk the icon box from 80px to 64px
+  textColumn: { flex: 1 },
+  featureTitle: { fontSize: "20px", fontWeight: "800", margin: "0 0 6px 0", color: "#2d3436" }, // Slightly smaller title
+  featureDesc: { fontSize: "15px", color: "#747d8c", lineHeight: "1.6", margin: 0, maxWidth: "750px" }, // Slightly smaller text
+  
+  reminderBtn: { 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    gap: "10px", 
+    width: "100%", 
+    padding: "14px", 
+    background: "linear-gradient(135deg, #fdcb6e, #e17055)", 
+    color: "#fff", 
+    border: "none", 
+    borderRadius: "16px", 
+    fontWeight: "700", 
+    fontSize: "15px", 
+    cursor: "pointer",
+    boxShadow: "0 4px 15px rgba(225, 112, 85, 0.3)"
+  },
+  adminCard: {
+  flex: 1,
+  padding: "25px",
+  backgroundColor: "#ffffff",
+  borderRadius: "20px",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
+  textAlign: "center",
+  border: "2px solid #f1f2f6"
+},
 };

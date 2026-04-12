@@ -1,9 +1,10 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.register = async (req, res) => {
   try {
+    console.log("Register API called"); 
     const { name, email, password, role, specialty } = req.body;
 
     // Check if user exists
@@ -19,10 +20,12 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashed,
-      role: role || "patient",
+      role: role === "admin" ? "patient" : (role || "patient"),
       // Save specialty only if the role is doctor, otherwise undefined
       specialty: role === "doctor" ? specialty : undefined
     });
+
+    console.log("User registered successfully"); 
 
     res.json({ msg: "Registration successful", userId: newUser._id });
 
@@ -34,11 +37,26 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    console.log("LOGIN ATTEMPT:", req.body);
+
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send("User not found");
+    console.log("USER FOUND:", user);
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(400).send("User not found");
+    }
+
+    console.log("Entered Password:", req.body.password);
+    console.log("Stored Hash:", user.password);
 
     const valid = await bcrypt.compare(req.body.password, user.password);
-    if (!valid) return res.status(400).send("Wrong password");
+    console.log("Password Match Result:", valid);
+
+    if (!valid) {
+      console.log("Password mismatch");
+      return res.status(400).send("Wrong password");
+    }
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
@@ -46,13 +64,17 @@ exports.login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    console.log("LOGIN SUCCESS");
+
     res.json({
       token,
       role: user.role,
       name: user.name,
-      specialty: user.specialty // Optional: send back specialty if needed on frontend
+      specialty: user.specialty
     });
+
   } catch (err) {
+    console.error("LOGIN ERROR:", err);
     res.status(500).send("Login error");
   }
 };

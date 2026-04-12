@@ -7,10 +7,14 @@ const verifyToken = (req, res, next) => {
 
   const token = header.split(" ")[1];
 
+  if (!token) return res.status(401).send("No Token Provided");
+
   jwt.verify(token, "healthcareSecret", (err, decoded) => {
     if (err) return res.status(401).send("Invalid Token");
 
     req.userId = decoded.id;
+    req.role = decoded.role;  
+
     next();
   });
 };
