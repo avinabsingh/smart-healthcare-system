@@ -3,13 +3,14 @@ const config = {
   packageManager: "npm",
   reporters: ["html", "clear-text"],
   testRunner: "jest",
-  coverageAnalysis: "off",   // 🔥 IMPORTANT CHANGE
+  coverageAnalysis: "off",
 
   jest: {
     enableFindRelatedTests: false
   },
 
   mutate: [
+    "riskCalculator.js",
     "server.js",
     "routes/**/*.js",
     "controllers/**/*.js",
